@@ -6,8 +6,43 @@ import data from './dummyData';
 export class Board extends Component {
   state = data;
 
-  onDragEnd = result => {
+  onDragEnd = dragResult => {
+    console.log(dragResult);
     // Synchronously update state to reflect drag/drop result
+    const { destination, source, draggableId } = dragResult;
+
+    // Destination can be null if drag didn't result in a valid drop point
+    if (!destination) {
+      return;
+    }
+
+    // Check if the location changed, source/destination ids/indexes will be same otherwise
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const targetCard = this.state.cards.find(
+      card => card.id === source.droppableId
+    );
+    const newItemIds = [...targetCard.itemIds]; // Create copy
+
+    newItemIds.splice(source.index, 1); // Remove dragged Item
+    newItemIds.splice(destination.index, 0, draggableId); // Insert into target index
+
+    targetCard.itemIds = newItemIds;
+
+    // todo make readable
+    this.setState({
+      ...this.state,
+      cards: [...this.state.cards].splice(
+        this.state.cards.findIndex(card => card.id === destination.droppableId),
+        1,
+        targetCard
+      ),
+    });
   };
 
   render() {
