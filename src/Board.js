@@ -8,9 +8,10 @@ export class Board extends Component {
   render() {
     return (
       <>
-        {this.state.cards.map(card => (
-          <Card key={card.id} {...card} />
-        ))}
+        {this.state.cards.map(card => {
+          const items = card.itemIds.map(id => this.state.items[id]);
+          return <Card key={card.id} {...card} items={items} />;
+        })}
       </>
     );
   }

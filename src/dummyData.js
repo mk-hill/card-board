@@ -11,13 +11,13 @@ const data = {
     {
       id: 'c101',
       title: 'Quotes',
-      items: ['i120', 'i121', 'i122', 'i123'],
+      itemIds: ['i120', 'i121', 'i122', 'i123'],
     },
 
     {
       id: 'c102',
       title: 'Stuff',
-      items: [],
+      itemIds: [],
     },
   ],
 };
