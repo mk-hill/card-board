@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import Card from './Card';
 import data from './dummyData';
 
 export class Board extends Component {
   state = data;
 
+  onDragEnd = result => {
+    // Synchronously update state to reflect drag/drop result
+  };
+
   render() {
+    const { cards, items } = this.state;
     return (
-      <>
-        {this.state.cards.map(card => {
-          const items = card.itemIds.map(id => this.state.items[id]);
-          return <Card key={card.id} {...card} items={items} />;
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        {cards.map(card => {
+          const cardItems = card.itemIds.map(id => items[id]);
+          return <Card key={card.id} {...card} items={cardItems} />;
         })}
-      </>
+      </DragDropContext>
     );
   }
 }
