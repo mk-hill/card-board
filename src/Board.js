@@ -6,10 +6,10 @@ import data from './dummyData';
 export class Board extends Component {
   state = data;
 
+  // Synchronously update state to reflect drag/drop result
   onDragEnd = dragResult => {
-    console.log(dragResult);
-    // Synchronously update state to reflect drag/drop result
     const { destination, source, draggableId } = dragResult;
+    const { cards } = this.state;
 
     // Destination can be null if drag didn't result in a valid drop point
     if (!destination) {
@@ -24,34 +24,34 @@ export class Board extends Component {
       return;
     }
 
-    const targetCard = this.state.cards.find(
-      card => card.id === source.droppableId
-    );
-    const newItemIds = [...targetCard.itemIds]; // Create copy
+    const sourceCard = cards[source.droppableId];
+    const targetCard = cards[destination.droppableId];
 
-    newItemIds.splice(source.index, 1); // Remove dragged Item
-    newItemIds.splice(destination.index, 0, draggableId); // Insert into target index
+    // Create new copies of each card's itemIds array with dragged item filtered out
+    const sourceItems = sourceCard.itemIds.filter(id => id !== draggableId);
+    const targetItems = targetCard.itemIds.filter(id => id !== draggableId);
 
-    targetCard.itemIds = newItemIds;
+    // Insert dragged item into the correct index on target card
+    targetItems.splice(destination.index, 0, draggableId);
 
-    // todo make readable
     this.setState({
-      ...this.state,
-      cards: [...this.state.cards].splice(
-        this.state.cards.findIndex(card => card.id === destination.droppableId),
-        1,
-        targetCard
-      ),
+      // ...this.state,
+      cards: {
+        ...cards,
+        [source.droppableId]: { ...sourceCard, itemIds: sourceItems },
+        [destination.droppableId]: { ...targetCard, itemIds: targetItems },
+      },
     });
   };
 
   render() {
-    const { cards, items } = this.state;
+    const { cards, items, cardOrder } = this.state;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        {cards.map(card => {
+        {cardOrder.map(cardId => {
+          const card = cards[cardId];
           const cardItems = card.itemIds.map(id => items[id]);
-          return <Card key={card.id} {...card} items={cardItems} />;
+          return <Card key={cardId} {...card} items={cardItems} />;
         })}
       </DragDropContext>
     );

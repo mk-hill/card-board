@@ -4,22 +4,32 @@ const data = {
     i121: { id: 'i121', text: 'Hailing frequencies open.' },
     i122: { id: 'i122', text: 'Spawn more overlords.' },
     i123: { id: 'i123', text: 'Carrier has arrived.' },
+    i124: { id: 'i124', text: 'asd' },
   },
 
   // Keep in array for order?
-  cards: [
-    {
+  cards: {
+    c101: {
       id: 'c101',
       title: 'Quotes',
       itemIds: ['i120', 'i121', 'i122', 'i123'],
     },
 
-    {
+    c102: {
       id: 'c102',
       title: 'Stuff',
+      itemIds: ['i124'],
+    },
+
+    c103: {
+      id: 'c103',
+      title: 'Test',
       itemIds: [],
     },
-  ],
+  },
+
+  // Moved order to separate array for easier access
+  cardOrder: ['c101', 'c102', 'c103'],
 };
 
 export default data;
