@@ -9,6 +9,18 @@ const ItemBody = styled.div`
   margin-bottom: 0.5rem;
   transition: background-color 0.2s ease;
   background-color: ${props => (props.isDragging ? '#ddd' : '#fff')};
+
+  display: flex;
+`;
+
+// Set handle section within item if entire item shouldnt be grabbable
+const Handle = styled.div`
+  width: 1rem;
+  height: 1rem;
+  background-color: palevioletred;
+  border-radius: 2px;
+  /* display: inline-block; */
+  margin-right: 0.5rem;
 `;
 
 export class Item extends Component {
@@ -20,7 +32,7 @@ export class Item extends Component {
       <Draggable draggableId={id} index={index}>
         {/* provided argument similar to Droppable as well
             gets draggableProps and dragHandleProps 
-            can specify dragHandleProps if entire component shouldn't be grabbable
+            can spread dragHandleProps elsewhere if entire component shouldn't be grabbable
             2nd arg can be used to style component during drag */}
         {(provided, snapshot) => (
           <ItemBody
@@ -29,6 +41,7 @@ export class Item extends Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
+            {/* <Handle {...provided.dragHandleProps} /> */}
             {text}
           </ItemBody>
         )}

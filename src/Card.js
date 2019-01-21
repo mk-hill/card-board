@@ -7,6 +7,10 @@ const CardBody = styled.div`
   margin: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 2px;
+  width: 250px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
 `;
 const Title = styled.h3`
   padding: 0.5rem;
@@ -15,6 +19,7 @@ const ItemList = styled.div`
   padding: 0.5rem;
   background-color: ${props => (props.isDraggingOver ? '#ddd' : '#fff')};
   transition: background-color 0.2s ease;
+  flex: 50px 1 1;
 `;
 
 export class Card extends Component {
