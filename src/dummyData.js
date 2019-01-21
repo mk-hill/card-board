@@ -5,6 +5,7 @@ const data = {
     i122: { id: 'i122', text: 'Spawn more overlords.' },
     i123: { id: 'i123', text: 'Carrier has arrived.' },
     i124: { id: 'i124', text: 'asd' },
+    i125: { id: 'i125', text: "Can't touch this." },
   },
 
   // Keep in array for order?
@@ -18,7 +19,7 @@ const data = {
     c102: {
       id: 'c102',
       title: 'Stuff',
-      itemIds: ['i124'],
+      itemIds: ['i124', 'i125'],
     },
 
     c103: {

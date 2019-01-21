@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Card from './Card';
 import data from './dummyData';
@@ -30,7 +30,8 @@ export class Board extends Component {
     document.body.style.color = 'inherit'; // undo testDragStart
     document.body.style.backgroundColor = 'inherit'; // undo testDragUpdate
 
-    const { destination, source, draggableId } = dragResult;
+    const { destination, source, draggableId, type } = dragResult;
+    console.log(type);
     const { cards } = this.state;
 
     // Destination can be null if drag didn't result in a valid drop point
@@ -44,6 +45,14 @@ export class Board extends Component {
       destination.index === source.index
     ) {
       return;
+    }
+
+    if (type === 'card') {
+      return this.reorderCards({
+        from: source.index,
+        to: destination.index,
+        id: draggableId,
+      });
     }
 
     const sourceCard = cards[source.droppableId];
@@ -66,6 +75,14 @@ export class Board extends Component {
     });
   };
 
+  reorderCards = ({ from, to, id }) => {
+    // Create new copy and modify cardOrder
+    const newCardOrder = [...this.state.cardOrder];
+    newCardOrder.splice(from, 1);
+    newCardOrder.splice(to, 0, id);
+    this.setState({ cardOrder: newCardOrder });
+  };
+
   render() {
     const { cards, items, cardOrder } = this.state;
     return (
@@ -74,13 +91,29 @@ export class Board extends Component {
         onDragStart={this.testDragStart}
         onDragUpdate={this.testDragUpdate}
       >
-        <CardsContainer>
-          {cardOrder.map(cardId => {
-            const card = cards[cardId];
-            const cardItems = card.itemIds.map(id => items[id]);
-            return <Card key={cardId} {...card} items={cardItems} />;
-          })}
-        </CardsContainer>
+        {/* Cards move horizontally within board, items move vertically within card(s) */}
+        <Droppable droppableId="Board" direction="horizontal" type="card">
+          {provided => (
+            <CardsContainer
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {cardOrder.map((cardId, index) => {
+                const card = cards[cardId];
+                const cardItems = card.itemIds.map(id => items[id]);
+                return (
+                  <Card
+                    key={cardId}
+                    {...card}
+                    items={cardItems}
+                    index={index}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </CardsContainer>
+          )}
+        </Droppable>
       </DragDropContext>
     );
   }

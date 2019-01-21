@@ -8,9 +8,15 @@ const ItemBody = styled.div`
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDragging ? '#ddd' : '#fff')};
+  background-color: ${props =>
+    props.isDragDisabled ? 'red' : props.isDragging ? '#ddd' : '#fff'};
 
   display: flex;
+
+  &:focus {
+    outline: none;
+    border-color: blueviolet;
+  }
 `;
 
 // Set handle section within item if entire item shouldnt be grabbable
@@ -26,10 +32,12 @@ const Handle = styled.div`
 export class Item extends Component {
   render() {
     const { text, id, index } = this.props;
+    // Can be used to conditionally lock items
+    const isDragDisabled = id === 'i125';
     /* Draggable equires draggableId and index
        Expects its child to be a func like Droppable */
     return (
-      <Draggable draggableId={id} index={index}>
+      <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
         {/* provided argument similar to Droppable as well
             gets draggableProps and dragHandleProps 
             can spread dragHandleProps elsewhere if entire component shouldn't be grabbable
@@ -40,6 +48,7 @@ export class Item extends Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
+            isDragDisabled={isDragDisabled}
           >
             {/* <Handle {...provided.dragHandleProps} /> */}
             {text}
