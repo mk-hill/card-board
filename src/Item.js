@@ -7,7 +7,8 @@ const ItemBody = styled.div`
   border-radius: 2px;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
-  background-color: #fff;
+  transition: background-color 0.2s ease;
+  background-color: ${props => (props.isDragging ? '#ddd' : '#fff')};
 `;
 
 export class Item extends Component {
@@ -19,12 +20,14 @@ export class Item extends Component {
       <Draggable draggableId={id} index={index}>
         {/* provided argument similar to Droppable as well
             gets draggableProps and dragHandleProps 
-            can specify dragHandleProps if entire component shouldn't be grabbable */}
-        {provided => (
+            can specify dragHandleProps if entire component shouldn't be grabbable
+            2nd arg can be used to style component during drag */}
+        {(provided, snapshot) => (
           <ItemBody
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
+            isDragging={snapshot.isDragging}
           >
             {text}
           </ItemBody>

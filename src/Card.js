@@ -13,6 +13,8 @@ const Title = styled.h3`
 `;
 const ItemList = styled.div`
   padding: 0.5rem;
+  background-color: ${props => (props.isDraggingOver ? '#ddd' : '#fff')};
+  transition: background-color 0.2s ease;
 `;
 
 export class Card extends Component {
@@ -26,9 +28,14 @@ export class Card extends Component {
         <Droppable droppableId={id}>
           {/* provided.droppableProps provided to the droppable component
               can use styled component ref used to provide dom node to lib
-              placeholder needs to be added as a child of the droppable component */}
-          {provided => (
-            <ItemList ref={provided.innerRef} {...provided.droppableProps}>
+              placeholder needs to be added as a child of the droppable component
+              snapshot provided as in draggable */}
+          {(provided, snapshot) => (
+            <ItemList
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
+            >
               {items.map((item, index) => (
                 <Item key={item.id} {...item} index={index} />
               ))}
