@@ -17,7 +17,7 @@ const Title = styled.h3`
   padding: 0.5rem;
 `;
 
-const ItemList = styled.div`
+const ItemsContainer = styled.div`
   padding: 0.5rem;
   background-color: ${props => (props.isDraggingOver ? '#ddd' : 'inherit')};
   transition: background-color 0.2s ease;
@@ -43,22 +43,33 @@ export class Card extends Component {
               default direction = vertical
               snapshot provided as in draggable */}
               {(provided, snapshot) => (
-                <ItemList
+                <ItemsContainer
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  {items.map((item, index) => (
-                    <Item key={item.id} {...item} index={index} />
-                  ))}
+                  <ItemList items={items} />
                   {provided.placeholder}
-                </ItemList>
+                </ItemsContainer>
               )}
             </Droppable>
           </CardBody>
         )}
       </Draggable>
     );
+  }
+}
+
+// Prevent stationary items from rerendering while another is being dragged
+class ItemList extends Component {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.items !== this.props.items;
+  }
+
+  render() {
+    return this.props.items.map((item, index) => (
+      <Item key={item.id} {...item} index={index} />
+    ));
   }
 }
 

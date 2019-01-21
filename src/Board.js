@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Card from './Card';
@@ -26,24 +26,13 @@ export class Board extends Component {
   };
 
   // Synchronously update state to reflect drag/drop result
-  handlePlacement = dragResult => {
+  handleDrop = dragResult => {
     document.body.style.color = 'inherit'; // undo testDragStart
     document.body.style.backgroundColor = 'inherit'; // undo testDragUpdate
 
     const { destination, source, draggableId, type } = dragResult;
-    console.log(type);
-    const { cards } = this.state;
 
-    // Destination can be null if drag didn't result in a valid drop point
-    if (!destination) {
-      return;
-    }
-
-    // Check if the location changed, source/destination ids/indexes will be same otherwise
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (!this.shouldHandleDrop(source, destination)) {
       return;
     }
 
@@ -55,6 +44,30 @@ export class Board extends Component {
       });
     }
 
+    return this.rearrangeItems(source, destination, draggableId);
+  };
+
+  // Checks for whether or not changes were made/state should be updated on drop live here
+  shouldHandleDrop = (source, destination) => {
+    // Destination can be null if drag didn't result in a valid drop point
+    if (!destination) {
+      return false;
+    }
+
+    // source/destination ids & indexes will be same if location hasn't changed
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  // Handle both reordering within same card and moving an item to a different card
+  rearrangeItems = (source, destination, draggableId) => {
+    const { cards } = this.state;
     const sourceCard = cards[source.droppableId];
     const targetCard = cards[destination.droppableId];
 
@@ -87,9 +100,9 @@ export class Board extends Component {
     const { cards, items, cardOrder } = this.state;
     return (
       <DragDropContext
-        onDragEnd={this.handlePlacement}
-        onDragStart={this.testDragStart}
-        onDragUpdate={this.testDragUpdate}
+        onDragEnd={this.handleDrop}
+        // onDragStart={this.testDragStart}
+        // onDragUpdate={this.testDragUpdate}
       >
         {/* Cards move horizontally within board, items move vertically within card(s) */}
         <Droppable droppableId="Board" direction="horizontal" type="card">
@@ -100,12 +113,11 @@ export class Board extends Component {
             >
               {cardOrder.map((cardId, index) => {
                 const card = cards[cardId];
-                const cardItems = card.itemIds.map(id => items[id]);
                 return (
-                  <Card
+                  <PureCard
                     key={cardId}
-                    {...card}
-                    items={cardItems}
+                    card={card}
+                    items={items}
                     index={index}
                   />
                 );
@@ -119,4 +131,12 @@ export class Board extends Component {
   }
 }
 
+// Block renders if props are unchanged
+class PureCard extends PureComponent {
+  render() {
+    const { card, items, index } = this.props;
+    const cardItems = card.itemIds.map(id => items[id]);
+    return <Card key={card.id} {...card} items={cardItems} index={index} />;
+  }
+}
 export default Board;
