@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import data from './Data/dummyData';
 import ItemData from './Data/ItemData';
+import CardData from './Data/CardData';
 
 import Card from './Card';
 
@@ -12,7 +13,11 @@ const CardsContainer = styled.div`
 `;
 
 export class Board extends Component {
-  state = data;
+  state = {
+    ...data,
+    addingCard: false,
+    newCardTitle: '',
+  };
 
   testDragStart = () => {
     document.body.style.transition = 'background-color 0.2s ease';
@@ -92,6 +97,7 @@ export class Board extends Component {
     });
   };
 
+  // Reorder cards on board
   reorderCards = ({ from, to, id }) => {
     // Create new copy and modify cardOrder
     const newCardOrder = [...this.state.cardOrder];
@@ -100,17 +106,7 @@ export class Board extends Component {
     this.setState({ cardOrder: newCardOrder });
   };
 
-  updateItem = (itemId, newContent) => {
-    const { items } = this.state;
-    if (items[itemId] === newContent) {
-      return; // return if text hasn't been changed
-    }
-
-    this.setState({
-      items: { ...items, [itemId]: { ...items[itemId], text: newContent } },
-    });
-  };
-
+  // Add item to specified card
   addItem = (cardId, text) => {
     if (!text) {
       return;
@@ -124,6 +120,19 @@ export class Board extends Component {
     this.setState({
       items: { ...items, [newItem.id]: newItem },
       cards: { ...cards, [cardId]: { ...card, itemIds: newCardItems } },
+    });
+  };
+
+  // Change existing item's content
+  updateItem = (itemId, newContent) => {
+    const { items } = this.state;
+
+    if (!newContent || items[itemId].text === newContent) {
+      return; // return if text hasn't been changed
+    }
+
+    this.setState({
+      items: { ...items, [itemId]: { ...items[itemId], text: newContent } },
     });
   };
 
@@ -143,8 +152,53 @@ export class Board extends Component {
     });
   };
 
+  addCard = e => {
+    e.preventDefault();
+    const { cards, cardOrder, newCardTitle } = this.state;
+
+    if (!newCardTitle) {
+      return;
+    }
+
+    const newCard = new CardData(newCardTitle);
+
+    this.setState({
+      cards: {
+        ...cards,
+        [newCard.id]: newCard,
+      },
+      cardOrder: [...cardOrder, newCard.id],
+      addingCard: false,
+      newCardTitle: '',
+    });
+  };
+
+  updateCard = (cardId, newTitle) => {
+    const { cards } = this.state;
+
+    if (cards[cardId].title === newTitle) {
+      return; // return if title hasn't been changed
+    }
+
+    this.setState({
+      cards: { ...cards, [cardId]: { ...cards[cardId], title: newTitle } },
+    });
+  };
+
+  deleteCard = cardId => {
+    const newCards = { ...this.state.cards };
+    delete newCards[cardId];
+
+    const newCardOrder = [...this.state.cardOrder].filter(id => id !== cardId);
+
+    this.setState({
+      cards: newCards,
+      cardOrder: newCardOrder,
+    });
+  };
+
   render() {
-    const { cards, items, cardOrder } = this.state;
+    const { cards, items, cardOrder, addingCard } = this.state;
     return (
       <DragDropContext
         onDragEnd={this.handleDrop}
@@ -169,10 +223,32 @@ export class Board extends Component {
                     updateItem={this.updateItem}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
+                    updateTitle={this.updateCard}
+                    deleteCard={this.deleteCard}
                   />
                 );
               })}
               {provided.placeholder}
+              {addingCard ? (
+                <form onSubmit={this.addCard}>
+                  <textarea
+                    type="text"
+                    value={this.state.newCardTitle}
+                    onChange={e =>
+                      this.setState({ newCardTitle: e.target.value })
+                    }
+                  />
+                  <button type="submit">Add</button>
+                </form>
+              ) : (
+                <button
+                  onClick={() => {
+                    this.setState(prev => ({ addingCard: !prev.addingCard }));
+                  }}
+                >
+                  Add Card
+                </button>
+              )}
             </CardsContainer>
           )}
         </Droppable>

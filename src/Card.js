@@ -26,37 +26,79 @@ const ItemsContainer = styled.div`
 
 export class Card extends Component {
   state = {
-    isInAddMode: false,
+    editingTitle: false,
+    title: '',
+    addingItem: false,
     newItemText: '',
   };
 
-  toggleAddMode = () => {
+  componentDidMount() {
+    if (!this.state.title) {
+      this.setState({ title: this.props.title });
+    }
+  }
+
+  toggleTitleForm = () => {
     this.setState(prevState => ({
-      isInAddMode: !prevState.isInAddMode,
+      editingTitle: !prevState.editingTitle,
     }));
   };
 
-  handleChange = e => {
-    this.setState({ newItemText: e.target.value });
+  submitNewTitle = e => {
+    e.preventDefault();
+    this.props.updateTitle(this.props.id, this.state.title);
+    this.toggleTitleForm();
+  };
+
+  toggleNewItemForm = () => {
+    this.setState(prevState => ({
+      addingItem: !prevState.addingItem,
+    }));
+  };
+
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   submitNewItem = e => {
     e.preventDefault();
     this.props.addItem(this.props.id, this.state.newItemText);
-    this.toggleAddMode();
+    this.toggleNewItemForm();
     this.setState({ newItemText: '' }); // clear input for future additions
   };
 
   render() {
-    const { title, id, index, ...itemProps } = this.props;
-    const { isInAddMode, newItemText } = this.state;
-    const { handleChange, toggleAddMode, submitNewItem } = this;
+    const { id, index, deleteCard, ...itemProps } = this.props;
+    const { addingItem, newItemText, editingTitle, title } = this.state;
+    const {
+      handleInputChange: handleChange,
+      toggleNewItemForm: toggleAddMode,
+      submitNewItem,
+      toggleTitleForm,
+      submitNewTitle,
+    } = this;
     return (
       <Draggable draggableId={id} index={index}>
         {provided => (
           <CardBody {...provided.draggableProps} ref={provided.innerRef}>
             {/* Cards can only be dragged from their title */}
-            <Title {...provided.dragHandleProps}>{title}</Title>
+            {editingTitle ? (
+              <form onSubmit={submitNewTitle}>
+                <input
+                  type="text"
+                  name="title"
+                  value={title}
+                  onChange={handleChange}
+                />
+                <button type="submit">Set</button>
+              </form>
+            ) : (
+              <Title {...provided.dragHandleProps}>
+                {title} <button onClick={toggleTitleForm}>E</button>
+                <button onClick={() => deleteCard(id)}>D</button>
+              </Title>
+            )}
+
             {/* Droppable requires unique droppableId prop, uses render props pattern
             Expects its child to be a func which returns a component
             Optionally can specify type of draggable it accepts */}
@@ -77,10 +119,11 @@ export class Card extends Component {
                 </ItemsContainer>
               )}
             </Droppable>
-            {isInAddMode ? (
+            {addingItem ? (
               <form onSubmit={submitNewItem}>
                 <textarea
                   type="text"
+                  name="newItemText"
                   value={newItemText}
                   onChange={handleChange}
                 />

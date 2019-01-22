@@ -47,7 +47,14 @@ export class Item extends Component {
 
   submitUpdate = e => {
     e.preventDefault();
-    this.props.updateItem(this.props.id, this.state.text);
+    const { text } = this.state;
+    // Prevent empty items, reset text instead
+    if (!text) {
+      this.setState({ text: this.props.text });
+    } else {
+      this.props.updateItem(this.props.id, text);
+    }
+
     this.toggleEdit();
   };
 
