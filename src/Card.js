@@ -26,7 +26,7 @@ const ItemsContainer = styled.div`
 
 export class Card extends Component {
   render() {
-    const { title, id, items, index } = this.props;
+    const { title, id, items, index, updateItem } = this.props;
     return (
       <Draggable draggableId={id} index={index}>
         {provided => (
@@ -48,7 +48,7 @@ export class Card extends Component {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  <ItemList items={items} />
+                  <ItemList items={items} updateItem={updateItem} />
                   {provided.placeholder}
                 </ItemsContainer>
               )}
@@ -67,8 +67,14 @@ class ItemList extends Component {
   }
 
   render() {
-    return this.props.items.map((item, index) => (
-      <Item key={item.id} {...item} index={index} />
+    const { items, updateItem } = this.props;
+    return items.map((item, index) => (
+      <Item
+        key={item.id}
+        {...item}
+        index={index}
+        update={updateItem.bind(this, item.id)}
+      />
     ));
   }
 }

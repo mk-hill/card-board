@@ -1,11 +1,15 @@
 const data = {
   items: {
-    i120: { id: 'i120', text: 'You must construct additional pylons.' },
-    i121: { id: 'i121', text: 'Hailing frequencies open.' },
-    i122: { id: 'i122', text: 'Spawn more overlords.' },
-    i123: { id: 'i123', text: 'Carrier has arrived.' },
-    i124: { id: 'i124', text: 'asd' },
-    i125: { id: 'i125', text: "Can't touch this." },
+    i120: {
+      id: 'i120',
+      text: 'You must construct additional pylons.',
+      isLocked: false,
+    },
+    i121: { id: 'i121', text: 'Hailing frequencies open.', isLocked: false },
+    i122: { id: 'i122', text: 'Spawn more overlords.', isLocked: true },
+    i123: { id: 'i123', text: 'Carrier has arrived.', isLocked: false },
+    i124: { id: 'i124', text: 'asd', isLocked: false },
+    i125: { id: 'i125', text: "Can't touch this.", isLocked: true },
   },
 
   // Keep in array for order?

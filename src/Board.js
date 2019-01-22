@@ -96,6 +96,18 @@ export class Board extends Component {
     this.setState({ cardOrder: newCardOrder });
   };
 
+  updateItem = (itemId, newContent) => {
+    const { items } = this.state;
+    console.log(itemId, newContent);
+    if (items[itemId] === newContent) {
+      return; // return if text hasn't been changed
+    }
+
+    this.setState({
+      items: { ...items, [itemId]: { ...items[itemId], text: newContent } },
+    });
+  };
+
   render() {
     const { cards, items, cardOrder } = this.state;
     return (
@@ -119,6 +131,7 @@ export class Board extends Component {
                     card={card}
                     items={items}
                     index={index}
+                    updateItem={this.updateItem}
                   />
                 );
               })}
@@ -131,12 +144,14 @@ export class Board extends Component {
   }
 }
 
-// Block renders if props are unchanged
+// Block render if props are unchanged (shallow)
 class PureCard extends PureComponent {
   render() {
-    const { card, items, index } = this.props;
+    const { card, items, ...remainingProps } = this.props;
     const cardItems = card.itemIds.map(id => items[id]);
-    return <Card key={card.id} {...card} items={cardItems} index={index} />;
+    return (
+      <Card key={card.id} {...card} items={cardItems} {...remainingProps} />
+    );
   }
 }
 export default Board;

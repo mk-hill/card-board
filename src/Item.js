@@ -30,14 +30,45 @@ const Handle = styled.div`
 `;
 
 export class Item extends Component {
+  state = {
+    isBeingEdited: false,
+    text: '',
+  };
+
+  toggleEdit = () => {
+    this.setState(prevState => ({
+      isBeingEdited: !prevState.isBeingEdited,
+    }));
+  };
+
+  handleChange = e => {
+    this.setState({ text: e.target.value });
+  };
+
+  submitUpdate = e => {
+    e.preventDefault();
+    console.log(e);
+    this.props.update(this.state.text);
+    this.toggleEdit();
+  };
+
+  componentDidMount() {
+    if (!this.state.text) {
+      this.setState({ text: this.props.text });
+    }
+  }
+
   render() {
-    const { text, id, index } = this.props;
+    const { id, index, isLocked } = this.props;
+    const { isBeingEdited, text } = this.state;
+    const { handleChange, submitUpdate, toggleEdit } = this;
+
     // Can be used to conditionally lock items
-    const isDragDisabled = id === 'i125';
+    // const isDragDisabled = id === 'i125';
     /* Draggable equires draggableId and index
        Expects its child to be a func like Droppable */
     return (
-      <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
+      <Draggable draggableId={id} index={index} isDragDisabled={isLocked}>
         {/* provided argument similar to Droppable as well
             gets draggableProps and dragHandleProps 
             can spread dragHandleProps elsewhere if entire component shouldn't be grabbable
@@ -48,10 +79,19 @@ export class Item extends Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
-            isDragDisabled={isDragDisabled}
+            isDragDisabled={isLocked}
           >
             {/* <Handle {...provided.dragHandleProps} /> */}
-            {text}
+            {isBeingEdited ? (
+              <form onSubmit={submitUpdate}>
+                <input type="text" value={text} onChange={handleChange} />
+              </form>
+            ) : (
+              <>
+                {text}
+                <button onClick={toggleEdit}>Edit</button>
+              </>
+            )}
           </ItemBody>
         )}
       </Draggable>
