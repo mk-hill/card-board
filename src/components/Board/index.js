@@ -6,13 +6,32 @@ import { CardsContainer, AddCardButton, PureCard as Card } from './elements';
 
 import { BoardData as Data } from '../../data';
 
-const data = Data.generateDummy();
+const dummyData = Data.generateDummy();
 
 class Board extends Component {
   state = {
-    ...data,
+    ...dummyData,
     addingCard: false,
     newCardTitle: '',
+  };
+
+  componentWillMount = () => {
+    // console.log(this.state);
+    let data;
+    const storedData = localStorage.getItem(this.state.id);
+    if (storedData) {
+      data = JSON.parse(storedData);
+    } else {
+      data = dummyData;
+    }
+    this.setState({
+      ...data,
+    });
+  };
+
+  updateLocalStorage = () => {
+    const { items, cards, cardOrder } = this.state;
+    localStorage.setItem(this.state.id, JSON.stringify({ items, cards, cardOrder }));
   };
 
   testDragStart = () => {
@@ -45,6 +64,7 @@ class Board extends Component {
         id: draggableId,
       });
     }
+    this.updateLocalStorage();
 
     // * Defaulting to 'item' type, change if 3rd draggable type is introduced
     return this.rearrangeItems(source, destination, draggableId);
@@ -104,7 +124,7 @@ class Board extends Component {
     }
     const { cards, items } = this.state;
     const card = cards[cardId];
-    const newItem = data.addItem(cardId, text);
+    const newItem = dummyData.addItem(cardId, text);
 
     const newCardItems = [...card.itemIds, newItem.id];
 
@@ -151,7 +171,7 @@ class Board extends Component {
       return;
     }
 
-    const newCard = data.addCard(newCardTitle);
+    const newCard = dummyData.addCard(newCardTitle);
 
     this.setState({
       cards: {

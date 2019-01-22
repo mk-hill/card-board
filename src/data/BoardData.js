@@ -1,8 +1,10 @@
+import uuid from 'uuid/v4';
 import CardData from './CardData';
 import ItemData from './ItemData';
 
 export default class BoardData {
-  constructor(title = 'Enter board title') {
+  constructor(title = 'Enter board title', dummy = false) {
+    this.id = dummy ? 'dummyData' : uuid();
     this.title = title;
     this.items = {};
     this.cards = {};
@@ -28,7 +30,7 @@ export default class BoardData {
   }
 
   static generateDummy(minCards = 2, minItems = 5, variance = 3) {
-    const data = new BoardData('Dummy Data');
+    const data = new BoardData('Dummy Data', true);
     const v = random.numFromZero(variance);
     for (let c = 0; c < minCards + v; c++) {
       let nextTitle = random.card;
@@ -36,11 +38,7 @@ export default class BoardData {
     }
 
     for (let i = 0; i < minItems + v; i++) {
-      data.addItem(
-        data.cardOrder[random.numFromZero(data.cardOrder.length)],
-        random.item,
-        false
-      );
+      data.addItem(data.cardOrder[random.numFromZero(data.cardOrder.length)], random.item, false);
     }
     return data;
   }
@@ -61,14 +59,7 @@ const random = {
     return this.itemTitles.splice(i, 1);
   },
 
-  cardTitles: [
-    'Stuff',
-    'Other stuff',
-    'Another Card',
-    'Hello World',
-    'Aliens',
-    'Quotes',
-  ],
+  cardTitles: ['Stuff', 'Other stuff', 'Another Card', 'Hello World', 'Aliens', 'Quotes'],
 
   itemTitles: [
     'Hailing frequencies open.',
