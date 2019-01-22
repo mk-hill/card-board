@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
+import { item as i } from './theme';
 
 const ItemBody = styled.div`
-  border: 1px solid #eee;
-  border-radius: 2px;
+  border: ${i.border};
+  border-radius: ${i.borderRadius};
   padding: 0.5rem;
   margin-bottom: 0.5rem;
-  transition: background-color 0.2s ease;
-  background-color: ${props =>
-    props.isDragDisabled ? 'red' : props.isDragging ? '#ddd' : '#fff'};
+  transition: background-color, border-color ${i.transition};
+  background-color: ${props => i.getDragBg(props)};
+  border-color: ${props => i.getDragBr(props)};
 
   display: flex;
   position: relative;
@@ -24,7 +25,11 @@ const ItemBody = styled.div`
 
   &:focus {
     outline: none;
-    border-color: blueviolet;
+    border-color: ${i.brColorFocus};
+  }
+
+  &:hover {
+    border-color: ${i.brColorHover};
   }
 
   &:hover button {
@@ -35,11 +40,11 @@ const ItemBody = styled.div`
 // Hide unless hovering on item
 const ItemButton = styled.button`
   position: absolute;
-  right: 1rem;
+  right: 0.1rem;
   display: none;
 
   &:first-of-type {
-    right: 3rem;
+    right: 2rem;
   }
 `;
 
@@ -118,9 +123,7 @@ export class Item extends Component {
               <>
                 {text}
                 <ItemButton onClick={toggleEdit}>Edit</ItemButton>
-                <ItemButton onClick={() => deleteItem(cardId, id, index)}>
-                  D
-                </ItemButton>
+                <ItemButton onClick={() => deleteItem(cardId, id, index)}>D</ItemButton>
               </>
             )}
           </ItemBody>

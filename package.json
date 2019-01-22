@@ -21,7 +21,15 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "max-len": [
+        "error",
+        {
+          "code": 120
+        }
+      ]
+    }
   },
   "browserslist": [
     ">0.2%",

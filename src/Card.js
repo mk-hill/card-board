@@ -3,15 +3,24 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Item from './Item';
 
+import { card as c } from './theme';
+
 const CardBody = styled.div`
   margin: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 2px;
+  border: ${c.border};
+  border-radius: ${c.brRadius};
   width: 250px;
-  background-color: #fff;
+  background-color: ${c.bg};
   height: max-content;
   display: flex;
   flex-direction: column;
+
+  transition: border-color ${c.transition};
+  border-color: ${props => c.getDragBr(props)};
+
+  &:hover {
+    border-color: ${c.brColorHover};
+  }
 `;
 
 const Title = styled.h3`
@@ -27,17 +36,17 @@ const Title = styled.h3`
 const TitleButton = styled.button`
   display: none;
   position: absolute;
-  right: 1rem;
+  right: 0.5rem;
 
   &:first-of-type {
-    right: 4rem;
+    right: 3rem;
   }
 `;
 
 const ItemsContainer = styled.div`
   padding: 0.5rem;
-  background-color: ${props => (props.isDraggingOver ? '#ddd' : 'inherit')};
-  transition: background-color 0.2s ease;
+  background-color: ${props => (props.isDraggingOver ? c.bgDragOver : 'inherit')};
+  transition: background-color ${c.transition};
   flex: 50px 1 1;
 `;
 
@@ -96,23 +105,17 @@ export class Card extends Component {
     } = this;
     return (
       <Draggable draggableId={id} index={index}>
-        {provided => (
-          <CardBody {...provided.draggableProps} ref={provided.innerRef}>
+        {(provided, snapshot) => (
+          <CardBody {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
             {/* Cards can only be dragged from their title */}
             {editingTitle ? (
               <form onSubmit={submitNewTitle}>
-                <input
-                  type="text"
-                  name="title"
-                  value={title}
-                  onChange={handleChange}
-                />
+                <input type="text" name="title" value={title} onChange={handleChange} />
                 <button type="submit">Set</button>
               </form>
             ) : (
               <Title {...provided.dragHandleProps}>
-                {title}{' '}
-                <TitleButton onClick={toggleTitleForm}>Edit</TitleButton>
+                {title} <TitleButton onClick={toggleTitleForm}>Edit</TitleButton>
                 <TitleButton onClick={() => deleteCard(id)}>D</TitleButton>
               </Title>
             )}
@@ -139,12 +142,7 @@ export class Card extends Component {
             </Droppable>
             {addingItem ? (
               <form onSubmit={submitNewItem}>
-                <textarea
-                  type="text"
-                  name="newItemText"
-                  value={newItemText}
-                  onChange={handleChange}
-                />
+                <textarea type="text" name="newItemText" value={newItemText} onChange={handleChange} />
                 <button type="submit">Add</button>
               </form>
             ) : (
@@ -168,9 +166,7 @@ class ItemList extends Component {
   render() {
     // No need to pass item Ids and addItem()
     const { items, itemIds, addItem, ...remainingProps } = this.props;
-    return items.map((item, index) => (
-      <Item key={item.id} index={index} {...item} {...remainingProps} />
-    ));
+    return items.map((item, index) => <Item key={item.id} index={index} {...item} {...remainingProps} />);
   }
 }
 
