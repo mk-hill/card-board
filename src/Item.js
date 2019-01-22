@@ -47,8 +47,7 @@ export class Item extends Component {
 
   submitUpdate = e => {
     e.preventDefault();
-    console.log(e);
-    this.props.update(this.state.text);
+    this.props.updateItem(this.props.id, this.state.text);
     this.toggleEdit();
   };
 
@@ -59,13 +58,11 @@ export class Item extends Component {
   }
 
   render() {
-    const { id, index, isLocked } = this.props;
+    const { id, index, isLocked, cardId, deleteItem } = this.props;
     const { isBeingEdited, text } = this.state;
     const { handleChange, submitUpdate, toggleEdit } = this;
 
-    // Can be used to conditionally lock items
-    // const isDragDisabled = id === 'i125';
-    /* Draggable equires draggableId and index
+    /* Draggable requires draggableId and index
        Expects its child to be a func like Droppable */
     return (
       <Draggable draggableId={id} index={index} isDragDisabled={isLocked}>
@@ -90,6 +87,7 @@ export class Item extends Component {
               <>
                 {text}
                 <button onClick={toggleEdit}>Edit</button>
+                <button onClick={() => deleteItem(cardId, id, index)}>D</button>
               </>
             )}
           </ItemBody>

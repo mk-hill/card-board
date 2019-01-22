@@ -25,8 +25,32 @@ const ItemsContainer = styled.div`
 `;
 
 export class Card extends Component {
+  state = {
+    isInAddMode: false,
+    newItemText: '',
+  };
+
+  toggleAddMode = () => {
+    this.setState(prevState => ({
+      isInAddMode: !prevState.isInAddMode,
+    }));
+  };
+
+  handleChange = e => {
+    this.setState({ newItemText: e.target.value });
+  };
+
+  submitNewItem = e => {
+    e.preventDefault();
+    this.props.addItem(this.props.id, this.state.newItemText);
+    this.toggleAddMode();
+    this.setState({ newItemText: '' }); // clear input for future additions
+  };
+
   render() {
-    const { title, id, items, index, updateItem } = this.props;
+    const { title, id, index, ...itemProps } = this.props;
+    const { isInAddMode, newItemText } = this.state;
+    const { handleChange, toggleAddMode, submitNewItem } = this;
     return (
       <Draggable draggableId={id} index={index}>
         {provided => (
@@ -48,11 +72,25 @@ export class Card extends Component {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  <ItemList items={items} updateItem={updateItem} />
+                  <ItemList {...itemProps} cardId={id} />
                   {provided.placeholder}
                 </ItemsContainer>
               )}
             </Droppable>
+            {isInAddMode ? (
+              <form onSubmit={submitNewItem}>
+                <textarea
+                  type="text"
+                  value={newItemText}
+                  onChange={handleChange}
+                />
+                <button type="submit">Add</button>
+              </form>
+            ) : (
+              <>
+                <button onClick={toggleAddMode}>Add item</button>
+              </>
+            )}
           </CardBody>
         )}
       </Draggable>
@@ -67,14 +105,10 @@ class ItemList extends Component {
   }
 
   render() {
-    const { items, updateItem } = this.props;
+    // No need to pass item Ids and addItem()
+    const { items, itemIds, addItem, ...remainingProps } = this.props;
     return items.map((item, index) => (
-      <Item
-        key={item.id}
-        {...item}
-        index={index}
-        update={updateItem.bind(this, item.id)}
-      />
+      <Item key={item.id} index={index} {...item} {...remainingProps} />
     ));
   }
 }

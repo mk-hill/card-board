@@ -1,8 +1,11 @@
 import React, { Component, PureComponent } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+
+import data from './Data/dummyData';
+import ItemData from './Data/ItemData';
+
 import Card from './Card';
-import data from './dummyData';
 
 const CardsContainer = styled.div`
   display: flex;
@@ -27,13 +30,13 @@ export class Board extends Component {
 
   // Synchronously update state to reflect drag/drop result
   handleDrop = dragResult => {
-    document.body.style.color = 'inherit'; // undo testDragStart
-    document.body.style.backgroundColor = 'inherit'; // undo testDragUpdate
+    // document.body.style.color = 'inherit'; // undo testDragStart
+    // document.body.style.backgroundColor = 'inherit'; // undo testDragUpdate
 
     const { destination, source, draggableId, type } = dragResult;
 
     if (!this.shouldHandleDrop(source, destination)) {
-      return;
+      return; // No changes were necessary
     }
 
     if (type === 'card') {
@@ -44,6 +47,7 @@ export class Board extends Component {
       });
     }
 
+    // * Defaulting to 'item' type, change if 3rd draggable type is introduced
     return this.rearrangeItems(source, destination, draggableId);
   };
 
@@ -98,13 +102,44 @@ export class Board extends Component {
 
   updateItem = (itemId, newContent) => {
     const { items } = this.state;
-    console.log(itemId, newContent);
     if (items[itemId] === newContent) {
       return; // return if text hasn't been changed
     }
 
     this.setState({
       items: { ...items, [itemId]: { ...items[itemId], text: newContent } },
+    });
+  };
+
+  addItem = (cardId, text) => {
+    if (!text) {
+      return;
+    }
+    const { cards, items } = this.state;
+    const card = cards[cardId];
+    const newItem = new ItemData(text);
+
+    const newCardItems = [...card.itemIds, newItem.id];
+
+    this.setState({
+      items: { ...items, [newItem.id]: newItem },
+      cards: { ...cards, [cardId]: { ...card, itemIds: newCardItems } },
+    });
+  };
+
+  deleteItem = (cardId, itemId, index) => {
+    const { cards, items } = this.state;
+    const card = cards[cardId];
+
+    const newCardItems = [...card.itemIds];
+    newCardItems.splice(index, 1);
+
+    const newItems = { ...items };
+    delete newItems[itemId];
+
+    this.setState({
+      items: newItems,
+      cards: { ...cards, [cardId]: { ...card, itemIds: newCardItems } },
     });
   };
 
@@ -132,6 +167,8 @@ export class Board extends Component {
                     items={items}
                     index={index}
                     updateItem={this.updateItem}
+                    addItem={this.addItem}
+                    deleteItem={this.deleteItem}
                   />
                 );
               })}
@@ -150,7 +187,7 @@ class PureCard extends PureComponent {
     const { card, items, ...remainingProps } = this.props;
     const cardItems = card.itemIds.map(id => items[id]);
     return (
-      <Card key={card.id} {...card} items={cardItems} {...remainingProps} />
+      <Card key={card.id} items={cardItems} {...card} {...remainingProps} />
     );
   }
 }
