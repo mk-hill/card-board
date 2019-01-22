@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
+
+import Icon from './Icon';
+
 import { item as i } from './theme';
 
 const ItemBody = styled.div`
@@ -8,7 +11,7 @@ const ItemBody = styled.div`
   border-radius: ${i.borderRadius};
   padding: 0.5rem;
   margin-bottom: 0.5rem;
-  transition: background-color, border-color ${i.transition};
+  transition: border-color ${i.transition}, background-color ${i.transition};
   background-color: ${props => i.getDragBg(props)};
   border-color: ${props => i.getDragBr(props)};
 
@@ -32,8 +35,36 @@ const ItemBody = styled.div`
     border-color: ${i.brColorHover};
   }
 
-  &:hover button {
-    display: inline;
+  &:hover,
+  &:focus {
+    svg {
+      display: inline-block;
+      opacity: 0.4;
+    }
+  }
+
+  svg {
+    position: absolute;
+    right: 0.1rem;
+    display: none;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity ${i.transition} fill 0.5s ease;
+
+    :first-of-type {
+      right: 1rem;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+      fill: ${i.brColorHover};
+    }
+  }
+
+  #submitEdit {
+    right: 0.05rem;
+    bottom: 0.05rem;
   }
 `;
 
@@ -118,12 +149,18 @@ export class Item extends Component {
             {isBeingEdited ? (
               <form onSubmit={submitUpdate}>
                 <input type="text" value={text} onChange={handleChange} />
+                {/* label and input are only here to tie Icon to submit action, 
+                  alternatively create new click handler to form.submit() && submitUpdate() */}
+                <label>
+                  <input type="submit" style={{ display: 'none' }} />
+                  <Icon id="submitEdit" icon={'check'} title={'Submit'} />
+                </label>
               </form>
             ) : (
               <>
                 {text}
-                <ItemButton onClick={toggleEdit}>Edit</ItemButton>
-                <ItemButton onClick={() => deleteItem(cardId, id, index)}>D</ItemButton>
+                <Icon icon="pencil" viewBox="0 -3 26 26" onClick={toggleEdit} title="Edit" />
+                <Icon onClick={() => deleteItem(cardId, id, index)} title={'Delete'} />
               </>
             )}
           </ItemBody>

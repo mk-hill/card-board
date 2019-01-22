@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+
 import Item from './Item';
+import Icon from './Icon';
 
 import { card as c } from './theme';
 
@@ -26,9 +28,21 @@ const CardBody = styled.div`
 const Title = styled.h3`
   position: relative;
   padding: 0.5rem;
+  margin: 0;
 
-  &:hover button {
+  &:hover svg {
     display: inline;
+  }
+
+  svg {
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    right: 0.5rem;
+
+    &:first-of-type {
+      right: 3rem;
+    }
   }
 `;
 
@@ -40,6 +54,48 @@ const TitleButton = styled.button`
 
   &:first-of-type {
     right: 3rem;
+  }
+`;
+
+const AddButton = styled.div`
+  cursor: pointer;
+
+  &:hover {
+    background: ${c.brColorHover};
+  }
+`;
+
+const SubmitForm = styled.form`
+  position: relative;
+
+  textarea {
+    resize: none;
+    box-sizing: border-box;
+    border: ${c.border};
+    border-radius: ${c.brRadius};
+    /* height: 100%; */
+    width: 100%;
+    margin-bottom: 1.5rem;
+
+    &:focus {
+      outline: none;
+      border-color: ${c.brColorHover};
+    }
+  }
+
+  svg {
+    position: absolute;
+    bottom: 0.1rem;
+    fill: '#fff';
+  }
+
+  #submitItem {
+    right: 0.1rem;
+    fill: 'red';
+  }
+
+  #cancelItem {
+    left: 0.1rem;
   }
 `;
 
@@ -111,12 +167,15 @@ export class Card extends Component {
             {editingTitle ? (
               <form onSubmit={submitNewTitle}>
                 <input type="text" name="title" value={title} onChange={handleChange} />
-                <button type="submit">Set</button>
+                <label>
+                  <input type="submit" style={{ display: 'none' }} />
+                  <Icon icon="check" title="Submit" />
+                </label>
               </form>
             ) : (
               <Title {...provided.dragHandleProps}>
-                {title} <TitleButton onClick={toggleTitleForm}>Edit</TitleButton>
-                <TitleButton onClick={() => deleteCard(id)}>D</TitleButton>
+                {title} <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
+                <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
               </Title>
             )}
 
@@ -141,13 +200,34 @@ export class Card extends Component {
               )}
             </Droppable>
             {addingItem ? (
-              <form onSubmit={submitNewItem}>
-                <textarea type="text" name="newItemText" value={newItemText} onChange={handleChange} />
-                <button type="submit">Add</button>
-              </form>
+              <SubmitForm onSubmit={submitNewItem}>
+                <textarea
+                  type="text"
+                  name="newItemText"
+                  value={newItemText}
+                  onChange={handleChange}
+                  placeholder="Enter item text"
+                />
+                <label>
+                  <input type="submit" style={{ display: 'none' }} />
+                  <Icon id="submitItem" icon="check" title="Submit" />
+                </label>
+                <Icon
+                  id="cancelItem"
+                  title="Cancel"
+                  onClick={() => {
+                    toggleAddMode();
+                    // Wipe input from state after closing form
+                    this.setState({ newItemText: '' });
+                  }}
+                />
+              </SubmitForm>
             ) : (
               <>
-                <button onClick={toggleAddMode}>Add item</button>
+                <AddButton onClick={toggleAddMode} title="Add a new item to your card">
+                  <Icon icon="plus" />
+                  Add item
+                </AddButton>
               </>
             )}
           </CardBody>

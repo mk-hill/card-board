@@ -2,12 +2,36 @@ import React, { Component, PureComponent } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
+import Card from './Card';
+import Icon from './Icon';
+
 import { BoardData as Data } from './data';
 
-import Card from './Card';
-
 const CardsContainer = styled.div`
+  background: linear-gradient(
+    114.02807334855652deg,
+    rgba(226, 235, 239, 1) 4.775390625%,
+    rgba(208, 218, 224, 1) 98.13476562499999%
+  );
   display: flex;
+  min-width: max-content;
+  height: 100vh;
+`;
+
+const AddCardButton = styled.div`
+  height: 5rem;
+  width: 10rem;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    opacity: 1;
+    background-color: #fff;
+  }
 `;
 
 const data = Data.generateDummy();
@@ -27,9 +51,7 @@ export class Board extends Component {
   testDragUpdate = update => {
     const { destination } = update;
     // Set opacity to percentage based on item index
-    const opacity = destination
-      ? destination.index / Object.keys(this.state.items).length
-      : 0;
+    const opacity = destination ? destination.index / Object.keys(this.state.items).length : 0;
     document.body.style.backgroundColor = `rgba(123, 223, 89, ${opacity})`;
   };
 
@@ -64,10 +86,7 @@ export class Board extends Component {
     }
 
     // source/destination ids & indexes will be same if location hasn't changed
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return false;
     }
 
@@ -208,10 +227,7 @@ export class Board extends Component {
         {/* Cards move horizontally within board, items move vertically within card(s) */}
         <Droppable droppableId="Board" direction="horizontal" type="card">
           {provided => (
-            <CardsContainer
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
+            <CardsContainer {...provided.droppableProps} ref={provided.innerRef}>
               {cardOrder.map((cardId, index) => {
                 const card = cards[cardId];
                 return (
@@ -234,20 +250,22 @@ export class Board extends Component {
                   <textarea
                     type="text"
                     value={this.state.newCardTitle}
-                    onChange={e =>
-                      this.setState({ newCardTitle: e.target.value })
-                    }
+                    onChange={e => this.setState({ newCardTitle: e.target.value })}
                   />
-                  <button type="submit">Add</button>
+                  <label>
+                    <input type="submit" style={{ display: 'none' }} />
+                    <Icon icon="check" title="Submit" />
+                  </label>
                 </form>
               ) : (
-                <button
+                <AddCardButton
                   onClick={() => {
                     this.setState(prev => ({ addingCard: !prev.addingCard }));
                   }}
                 >
+                  <Icon icon="squaredPlus" />
                   Add Card
-                </button>
+                </AddCardButton>
               )}
             </CardsContainer>
           )}
@@ -262,9 +280,7 @@ class PureCard extends PureComponent {
   render() {
     const { card, items, ...remainingProps } = this.props;
     const cardItems = card.itemIds.map(id => items[id]);
-    return (
-      <Card key={card.id} items={cardItems} {...card} {...remainingProps} />
-    );
+    return <Card key={card.id} items={cardItems} {...card} {...remainingProps} />;
   }
 }
 export default Board;
