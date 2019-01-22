@@ -13,8 +13,25 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const Title = styled.h3`
+  position: relative;
   padding: 0.5rem;
+
+  &:hover button {
+    display: inline;
+  }
+`;
+
+// Hide unless hovering on title
+const TitleButton = styled.button`
+  display: none;
+  position: absolute;
+  right: 1rem;
+
+  &:first-of-type {
+    right: 4rem;
+  }
 `;
 
 const ItemsContainer = styled.div`
@@ -94,8 +111,9 @@ export class Card extends Component {
               </form>
             ) : (
               <Title {...provided.dragHandleProps}>
-                {title} <button onClick={toggleTitleForm}>E</button>
-                <button onClick={() => deleteCard(id)}>D</button>
+                {title}{' '}
+                <TitleButton onClick={toggleTitleForm}>Edit</TitleButton>
+                <TitleButton onClick={() => deleteCard(id)}>D</TitleButton>
               </Title>
             )}
 

@@ -2,15 +2,15 @@ import React, { Component, PureComponent } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
-import data from './Data/dummyData';
-import ItemData from './Data/ItemData';
-import CardData from './Data/CardData';
+import { BoardData as Data } from './data';
 
 import Card from './Card';
 
 const CardsContainer = styled.div`
   display: flex;
 `;
+
+const data = Data.generateDummy();
 
 export class Board extends Component {
   state = {
@@ -113,7 +113,7 @@ export class Board extends Component {
     }
     const { cards, items } = this.state;
     const card = cards[cardId];
-    const newItem = new ItemData(text);
+    const newItem = data.addItem(cardId, text);
 
     const newCardItems = [...card.itemIds, newItem.id];
 
@@ -160,7 +160,7 @@ export class Board extends Component {
       return;
     }
 
-    const newCard = new CardData(newCardTitle);
+    const newCard = data.addCard(newCardTitle);
 
     this.setState({
       cards: {

@@ -12,10 +12,34 @@ const ItemBody = styled.div`
     props.isDragDisabled ? 'red' : props.isDragging ? '#ddd' : '#fff'};
 
   display: flex;
+  position: relative;
+
+  white-space: pre-line;
+
+  // todo look into these
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  /* overflow: scroll; */
 
   &:focus {
     outline: none;
     border-color: blueviolet;
+  }
+
+  &:hover button {
+    display: inline;
+  }
+`;
+
+// Hide unless hovering on item
+const ItemButton = styled.button`
+  position: absolute;
+  right: 1rem;
+  display: none;
+
+  &:first-of-type {
+    right: 3rem;
   }
 `;
 
@@ -93,8 +117,10 @@ export class Item extends Component {
             ) : (
               <>
                 {text}
-                <button onClick={toggleEdit}>Edit</button>
-                <button onClick={() => deleteItem(cardId, id, index)}>D</button>
+                <ItemButton onClick={toggleEdit}>Edit</ItemButton>
+                <ItemButton onClick={() => deleteItem(cardId, id, index)}>
+                  D
+                </ItemButton>
               </>
             )}
           </ItemBody>
