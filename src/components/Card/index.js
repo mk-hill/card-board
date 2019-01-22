@@ -72,7 +72,7 @@ class Card extends Component {
                 </label>
               </form>
             ) : (
-              <CardTitle {...provided.dragHandleProps}>
+              <CardTitle {...provided.dragHandleProps} isDragging={snapshot.isDragging}>
                 {title} <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
                 <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
               </CardTitle>
@@ -100,7 +100,7 @@ class Card extends Component {
             </Droppable>
             {addingItem ? (
               <SubmitForm onSubmit={submitNewItem}>
-                <textarea
+                <input
                   type="text"
                   name="newItemText"
                   value={newItemText}

@@ -15,12 +15,64 @@ export const CardsContainer = styled.div`
   height: 99.5vh;
 `;
 
-export const AddCardButton = styled.div`
+export const AddCardForm = styled.form`
+  box-sizing: border-box;
   margin: 0.5rem;
-  height: 4rem;
+  height: 5.2rem;
+  width: 8rem;
+  position: relative;
+  background: ${c.bg};
+  border: ${c.border};
+  border-radius: ${c.brRadius};
+  font-size: 0.95em;
+  text-align: center;
+  padding: 0.5rem;
+  transition: border-color ${c.transition};
+
+  &:hover,
+  &:focus {
+    border-color: ${c.brColorDrag};
+  }
+
+  input {
+    box-sizing: border-box;
+    margin-top: 0.25rem;
+    width: 100%;
+    border: ${c.border};
+    border-radius: ${c.brRadius};
+    transition: inherit;
+
+    &:hover,
+    &:focus {
+      border-color: ${c.brColorDrag};
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  svg {
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0.1rem;
+    fill: ${c.brColor};
+    transition: fill ${c.transition};
+
+    &:hover {
+      cursor: pointer;
+      fill: ${c.brColorHover};
+    }
+  }
+`;
+
+export const AddCardButton = styled.div`
+  box-sizing: border-box;
+  margin: 0.5rem;
+  height: 5.2rem;
   width: 8rem;
   opacity: 0.5;
-  transition: opacity ${c.transition}, background-color ${c.transition};
+  transition: opacity ${c.transition}, background-color ${c.transition}, border-color ${c.transition};
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -31,6 +83,12 @@ export const AddCardButton = styled.div`
   &:hover {
     opacity: 1;
     background-color: ${c.bg};
+    border-color: ${c.brColorHover};
+  }
+
+  svg {
+    margin-right: 0.2rem;
+    fill: currentColor;
   }
 `;
 

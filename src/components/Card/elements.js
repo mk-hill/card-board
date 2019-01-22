@@ -26,6 +26,12 @@ export const CardTitle = styled.h3`
   position: relative;
   padding: 0.5rem;
   margin: 0;
+  transition: background-color ${c.transition};
+  background-color: ${props => c.getDragBr(props)};
+
+  &:hover {
+    background-color: ${c.brColorHover};
+  }
 
   &:hover svg {
     display: inline;
@@ -54,7 +60,7 @@ export const AddButton = styled.div`
 export const SubmitForm = styled.form`
   position: relative;
 
-  textarea {
+  input {
     resize: none;
     box-sizing: border-box;
     border: ${c.border};

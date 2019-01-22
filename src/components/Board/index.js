@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Icon from '../Icon';
-import { CardsContainer, AddCardButton, PureCard as Card } from './elements';
+import { CardsContainer, AddCardButton, AddCardForm, PureCard as Card } from './elements';
 
 import { BoardData as Data } from '../../data';
 
@@ -29,9 +29,13 @@ class Board extends Component {
     });
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    this.updateLocalStorage();
+  };
+
   updateLocalStorage = () => {
-    const { items, cards, cardOrder } = this.state;
-    localStorage.setItem(this.state.id, JSON.stringify({ items, cards, cardOrder }));
+    const { id, items, cards, cardOrder } = this.state;
+    localStorage.setItem(id, JSON.stringify({ items, cards, cardOrder }));
   };
 
   testDragStart = () => {
@@ -64,7 +68,6 @@ class Board extends Component {
         id: draggableId,
       });
     }
-    this.updateLocalStorage();
 
     // * Defaulting to 'item' type, change if 3rd draggable type is introduced
     return this.rearrangeItems(source, destination, draggableId);
@@ -238,7 +241,8 @@ class Board extends Component {
               })}
               {provided.placeholder}
               {addingCard ? (
-                <form onSubmit={this.addCard}>
+                <AddCardForm onSubmit={this.addCard}>
+                  Enter card title:
                   <input
                     type="text"
                     value={this.state.newCardTitle}
@@ -248,7 +252,7 @@ class Board extends Component {
                     <input type="submit" style={{ display: 'none' }} />
                     <Icon icon="check" title="Submit" />
                   </label>
-                </form>
+                </AddCardForm>
               ) : (
                 <AddCardButton
                   onClick={() => {
