@@ -1,112 +1,11 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-import Item from './Item';
-import Icon from './Icon';
+import Item from '../Item';
+import Icon from '../Icon';
+import { CardBody, CardTitle, ItemsContainer, SubmitForm, AddButton } from './elements';
 
-import { card as c } from './theme';
-
-const CardBody = styled.div`
-  margin: 0.5rem;
-  border: ${c.border};
-  border-radius: ${c.brRadius};
-  width: 250px;
-  background-color: ${c.bg};
-  height: max-content;
-  display: flex;
-  flex-direction: column;
-
-  transition: border-color ${c.transition};
-  border-color: ${props => c.getDragBr(props)};
-
-  &:hover {
-    border-color: ${c.brColorHover};
-  }
-`;
-
-const Title = styled.h3`
-  position: relative;
-  padding: 0.5rem;
-  margin: 0;
-
-  &:hover svg {
-    display: inline;
-  }
-
-  svg {
-    cursor: pointer;
-    display: none;
-    position: absolute;
-    right: 0.5rem;
-
-    &:first-of-type {
-      right: 3rem;
-    }
-  }
-`;
-
-// Hide unless hovering on title
-const TitleButton = styled.button`
-  display: none;
-  position: absolute;
-  right: 0.5rem;
-
-  &:first-of-type {
-    right: 3rem;
-  }
-`;
-
-const AddButton = styled.div`
-  cursor: pointer;
-
-  &:hover {
-    background: ${c.brColorHover};
-  }
-`;
-
-const SubmitForm = styled.form`
-  position: relative;
-
-  textarea {
-    resize: none;
-    box-sizing: border-box;
-    border: ${c.border};
-    border-radius: ${c.brRadius};
-    /* height: 100%; */
-    width: 100%;
-    margin-bottom: 1.5rem;
-
-    &:focus {
-      outline: none;
-      border-color: ${c.brColorHover};
-    }
-  }
-
-  svg {
-    position: absolute;
-    bottom: 0.1rem;
-    fill: '#fff';
-  }
-
-  #submitItem {
-    right: 0.1rem;
-    fill: 'red';
-  }
-
-  #cancelItem {
-    left: 0.1rem;
-  }
-`;
-
-const ItemsContainer = styled.div`
-  padding: 0.5rem;
-  background-color: ${props => (props.isDraggingOver ? c.bgDragOver : 'inherit')};
-  transition: background-color ${c.transition};
-  flex: 50px 1 1;
-`;
-
-export class Card extends Component {
+class Card extends Component {
   state = {
     editingTitle: false,
     title: '',
@@ -173,10 +72,10 @@ export class Card extends Component {
                 </label>
               </form>
             ) : (
-              <Title {...provided.dragHandleProps}>
+              <CardTitle {...provided.dragHandleProps}>
                 {title} <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
                 <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
-              </Title>
+              </CardTitle>
             )}
 
             {/* Droppable requires unique droppableId prop, uses render props pattern

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import 'normalize.css';
-import Board from './Board';
+import Board from './components/Board';
 
 ReactDOM.render(<Board />, document.getElementById('root'));
 

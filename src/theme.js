@@ -15,8 +15,8 @@ const color = {
 const [c1, c2, c3, c4, c5] = ['#f9a255', '#d5fffd', '#85a6d8', '#FDF7BB', '#fff'];
 
 const common = {
-  _brWidth: '1px', // Border width
-  brRadius: '2px', // Border radius
+  _brWidth: '2px', // Border width
+  brRadius: '5px', // Border radius
   transition: '.2s ease',
 };
 

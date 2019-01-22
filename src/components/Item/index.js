@@ -1,95 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 
-import Icon from './Icon';
+import Icon from '../Icon';
+import { ItemBody } from './elements';
 
-import { item as i } from './theme';
-
-const ItemBody = styled.div`
-  border: ${i.border};
-  border-radius: ${i.borderRadius};
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  transition: border-color ${i.transition}, background-color ${i.transition};
-  background-color: ${props => i.getDragBg(props)};
-  border-color: ${props => i.getDragBr(props)};
-
-  display: flex;
-  position: relative;
-
-  white-space: pre-line;
-
-  // todo look into these
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-  /* overflow: scroll; */
-
-  &:focus {
-    outline: none;
-    border-color: ${i.brColorFocus};
-  }
-
-  &:hover {
-    border-color: ${i.brColorHover};
-  }
-
-  &:hover,
-  &:focus {
-    svg {
-      display: inline-block;
-      opacity: 0.4;
-    }
-  }
-
-  svg {
-    position: absolute;
-    right: 0.1rem;
-    display: none;
-    opacity: 0;
-    cursor: pointer;
-    transition: opacity ${i.transition} fill 0.5s ease;
-
-    :first-of-type {
-      right: 1rem;
-    }
-
-    &:hover,
-    &:focus {
-      opacity: 1;
-      fill: ${i.brColorHover};
-    }
-  }
-
-  #submitEdit {
-    right: 0.05rem;
-    bottom: 0.05rem;
-  }
-`;
-
-// Hide unless hovering on item
-const ItemButton = styled.button`
-  position: absolute;
-  right: 0.1rem;
-  display: none;
-
-  &:first-of-type {
-    right: 2rem;
-  }
-`;
-
-// Set handle section within item if entire item shouldnt be grabbable
-const Handle = styled.div`
-  width: 1rem;
-  height: 1rem;
-  background-color: palevioletred;
-  border-radius: 2px;
-  /* display: inline-block; */
-  margin-right: 0.5rem;
-`;
-
-export class Item extends Component {
+class Item extends Component {
   state = {
     isBeingEdited: false,
     text: '',

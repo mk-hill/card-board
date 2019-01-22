@@ -1,42 +1,14 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import styled from 'styled-components';
 
-import Card from './Card';
-import Icon from './Icon';
+import Icon from '../Icon';
+import { CardsContainer, AddCardButton, PureCard as Card } from './elements';
 
-import { BoardData as Data } from './data';
-
-const CardsContainer = styled.div`
-  background: linear-gradient(
-    114.02807334855652deg,
-    rgba(226, 235, 239, 1) 4.775390625%,
-    rgba(208, 218, 224, 1) 98.13476562499999%
-  );
-  display: flex;
-  min-width: max-content;
-  height: 100vh;
-`;
-
-const AddCardButton = styled.div`
-  height: 5rem;
-  width: 10rem;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    opacity: 1;
-    background-color: #fff;
-  }
-`;
+import { BoardData as Data } from '../../data';
 
 const data = Data.generateDummy();
 
-export class Board extends Component {
+class Board extends Component {
   state = {
     ...data,
     addingCard: false,
@@ -231,7 +203,7 @@ export class Board extends Component {
               {cardOrder.map((cardId, index) => {
                 const card = cards[cardId];
                 return (
-                  <PureCard
+                  <Card
                     key={cardId}
                     card={card}
                     items={items}
@@ -247,7 +219,7 @@ export class Board extends Component {
               {provided.placeholder}
               {addingCard ? (
                 <form onSubmit={this.addCard}>
-                  <textarea
+                  <input
                     type="text"
                     value={this.state.newCardTitle}
                     onChange={e => this.setState({ newCardTitle: e.target.value })}
@@ -275,12 +247,4 @@ export class Board extends Component {
   }
 }
 
-// Block render if props are unchanged (shallow)
-class PureCard extends PureComponent {
-  render() {
-    const { card, items, ...remainingProps } = this.props;
-    const cardItems = card.itemIds.map(id => items[id]);
-    return <Card key={card.id} items={cardItems} {...card} {...remainingProps} />;
-  }
-}
 export default Board;
