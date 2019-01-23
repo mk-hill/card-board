@@ -252,6 +252,14 @@ class Board extends Component {
                     <input type="submit" style={{ display: 'none' }} />
                     <Icon icon="check" title="Submit" />
                   </label>
+                  <Icon
+                    id="cancelNewCard"
+                    title="Cancel"
+                    onClick={() => {
+                      // Wipe input from state after closing form
+                      this.setState(prev => ({ addingCard: !prev.addingCard, newCardTitle: '' }));
+                    }}
+                  />
                 </AddCardForm>
               ) : (
                 <AddCardButton

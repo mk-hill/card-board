@@ -10,6 +10,8 @@ export const CardsContainer = styled.div`
     rgba(226, 235, 239, 1) 4.775390625%,
     rgba(208, 218, 224, 1) 98.13476562499999%
   );
+  /* Text color inherited from here unless specified otherwise */
+  color: ${c.color};
   display: flex;
   min-width: max-content;
   height: 99.5vh;
@@ -63,6 +65,9 @@ export const AddCardForm = styled.form`
       cursor: pointer;
       fill: ${c.brColorHover};
     }
+  }
+  #cancelNewCard {
+    left: 0.1rem;
   }
 `;
 

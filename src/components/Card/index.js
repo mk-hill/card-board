@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-import Item from '../Item';
 import Icon from '../Icon';
-import { CardBody, CardTitle, ItemsContainer, SubmitForm, AddButton } from './elements';
+import { CardBody, CardTitle, ItemsContainer, SubmitForm, AddButton, ItemList } from './elements';
 
 class Card extends Component {
   state = {
@@ -133,19 +132,6 @@ class Card extends Component {
         )}
       </Draggable>
     );
-  }
-}
-
-// Prevent stationary items from rerendering while another is being dragged
-class ItemList extends Component {
-  shouldComponentUpdate(nextProps) {
-    return nextProps.items !== this.props.items;
-  }
-
-  render() {
-    // No need to pass item Ids and addItem()
-    const { items, itemIds, addItem, ...remainingProps } = this.props;
-    return items.map((item, index) => <Item key={item.id} index={index} {...item} {...remainingProps} />);
   }
 }
 

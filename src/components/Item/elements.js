@@ -5,7 +5,8 @@ export const ItemBody = styled.div`
   border: ${i.border};
   border-radius: ${i.borderRadius};
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */
+  margin: 0 0.2rem 0.5rem 0.4rem;
   transition: border-color ${i.transition}, background-color ${i.transition};
   background-color: ${props => i.getDragBg(props)};
   border-color: ${props => i.getDragBr(props)};
