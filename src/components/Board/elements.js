@@ -63,11 +63,12 @@ export const AddCardForm = styled.form`
 
     &:hover {
       cursor: pointer;
-      fill: ${c.brColorHover};
+      fill: ${c.titleIconHover};
     }
   }
   #cancelNewCard {
     left: 0.1rem;
+    transform: scale(1.15);
   }
 `;
 

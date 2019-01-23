@@ -26,29 +26,44 @@ export const CardBody = styled.div`
   }
 `;
 
-export const CardTitle = styled.h3`
+export const CardTitle = styled.div`
+  /* display: block; */
+  width: 100%;
   position: relative;
   padding: 0.5rem;
   margin: 0;
-  transition: background-color ${c.transition};
+  transition: background-color ${c.transition}, color ${c.transition};
   background-color: ${props => c.getDragBr(props)};
+  color: ${props => (props.isDragging ? c.bg : 'inherit')};
 
-  &:hover {
-    background-color: ${c.brColorHover};
-  }
-
-  &:hover svg {
+  h3 {
     display: inline;
   }
 
+  &:hover {
+    background-color: ${c.brColorHover};
+    color: ${c.bg};
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+
   svg {
+    fill: ${c.bg};
     cursor: pointer;
-    display: none;
     position: absolute;
-    right: 0.5rem;
+    right: 1.2rem;
+    opacity: 0;
+    transition: fill ${c.transition}, opacity ${c.transition};
+
+    &:hover {
+      fill: ${c.titleIconHover};
+    }
 
     &:first-of-type {
-      right: 3rem;
+      right: 2.5rem;
+      transform: scale(0.9);
     }
   }
 `;
@@ -76,15 +91,21 @@ export const AddButton = styled.div`
 `;
 
 export const SubmitForm = styled.form`
-  position: relative;
+  background-color: ${c.brColorHover};
+  border-radius: 1px;
+  margin-top: -1.5rem;
+  display: flex;
+  justify-content: center;
 
   input {
     resize: none;
     box-sizing: border-box;
     border: ${c.border};
     border-radius: ${c.brRadius};
+    background-color: ${c.bg};
     /* height: 100%; */
-    width: 100%;
+    width: 99%;
+    margin-top: 0.1rem;
     margin-bottom: 1.5rem;
 
     &:focus {
@@ -95,13 +116,21 @@ export const SubmitForm = styled.form`
 
   svg {
     position: absolute;
+    transition: color ${c.transition};
+    cursor: pointer;
+    /* box-sizing: border-box; */
     bottom: 0.1rem;
-    fill: '#fff';
+    color: ${c.bg};
+    fill: currentColor;
+
+    &:hover {
+      color: ${c.titleIconHover};
+    }
   }
 
   #submitItem {
     right: 0.1rem;
-    fill: 'red';
+    transform: scale(0.85);
   }
 
   #cancelItem {

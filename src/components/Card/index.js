@@ -72,7 +72,7 @@ class Card extends Component {
               </form>
             ) : (
               <CardTitle {...provided.dragHandleProps} isDragging={snapshot.isDragging}>
-                {title} <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
+                <h3>{title}</h3> <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
                 <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
               </CardTitle>
             )}
