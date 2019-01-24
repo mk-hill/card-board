@@ -65,6 +65,7 @@ export const card = {
   brColorHover: c4, //'#000', // Border color during hover
   brColorDrag: c4, //'red', // Border color during card drag
   titleIconHover: c2, // Icon color on hover
+  colorDark: c3,
 
   get border() {
     return `${common._brWidth} solid ${this.brColor}`;

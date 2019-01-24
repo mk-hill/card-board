@@ -5,7 +5,8 @@ import { card as c } from '../../theme';
 
 export const TitleFormContainer = styled.div`
   background-color: ${c.brColorDrag};
-  padding: 0.3rem 0.3rem 0.37rem 0.3rem;
+  padding: 0.3rem;
+  border: ${c.border};
 
   form {
     display: flex;
@@ -47,6 +48,7 @@ export const CardBody = styled.div`
   margin: 0.5rem;
   border: ${c.border};
   border-radius: ${c.brRadius};
+  min-width: 250px;
   width: 250px;
   background-color: ${c.bg};
   height: max-content;
@@ -138,12 +140,13 @@ export const SubmitForm = styled.form`
   input {
     resize: none;
     box-sizing: border-box;
+    padding: 0.1rem;
     border: ${c.border};
     border-radius: ${c.brRadius};
     background-color: ${c.bg};
     /* height: 100%; */
-    width: 98%;
-    margin-top: 0.1rem;
+    width: 97%;
+    margin-top: 0.2rem;
     margin-bottom: 1.5rem;
 
     &:focus {

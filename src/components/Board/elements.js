@@ -13,17 +13,32 @@ export const CardsContainer = styled.div`
   /* Text color inherited from here unless specified otherwise */
   color: ${c.color};
   /* flex: 1 0 94vh; */
-  height: 94vh;
+  height: 93vh;
   display: flex;
+  overflow-x: scroll;
+  /* padding: 1rem; */
   /* min-width: max-content; */
   /* height: 99.5vh; */
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${c.brColorHover};
+
+    &:hover {
+      background: ${c.brColor};
+    }
+  }
 `;
 
 export const AddCardForm = styled.form`
   box-sizing: border-box;
   margin: 0.5rem;
   height: 5.2rem;
-  width: 8rem;
+  /* width: 8rem; */
   position: relative;
   background: ${c.bg};
   border: ${c.border};
@@ -32,6 +47,7 @@ export const AddCardForm = styled.form`
   text-align: center;
   padding: 0.5rem;
   transition: border-color ${c.transition};
+  flex: 0 0 8rem;
 
   &:hover,
   &:focus {
@@ -78,7 +94,8 @@ export const AddCardButton = styled.div`
   box-sizing: border-box;
   margin: 0.5rem;
   height: 5.2rem;
-  width: 8rem;
+  /* width: 8rem; */
+  flex: 0 0 8rem;
   opacity: 0.5;
   transition: opacity ${c.transition}, background-color ${c.transition}, border-color ${c.transition};
   cursor: pointer;

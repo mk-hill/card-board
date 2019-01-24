@@ -15,8 +15,8 @@ const TitleSpan = styled.span`
 `;
 
 const BoardNav = styled.nav`
-  background-color: ${c.brColorDrag};
-  flex: 1 1 3vh;
+  background-color: ${c.colorDark};
+  flex: 1 1 4vh;
   color: ${c.bg};
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@ const BoardNav = styled.nav`
 `;
 
 const BoardFooter = styled.footer`
-  background-color: ${c.brColorDrag};
+  background-color: ${c.colorDark};
   flex: 1 1 3vh;
   color: ${c.bg};
   display: flex;
@@ -47,11 +47,16 @@ const BoardWrapper = ({ children, title }) => {
   return (
     <Wrapper>
       <BoardNav>
-        <TitleSpan>{title}</TitleSpan>
+        <TitleSpan>
+          {title}
+          {/* <Icon icon="pencil" title="Edit board title" /> */}
+        </TitleSpan>
         <Icon icon="dots" />
       </BoardNav>
       {children}
-      <BoardFooter>cardboard</BoardFooter>
+      <BoardFooter>
+        card <Icon icon="cardboard" /> board
+      </BoardFooter>
     </Wrapper>
   );
 };

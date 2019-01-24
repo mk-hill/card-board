@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { withTheme } from 'styled-components';
 
 // Icons courtesy of icomoon.io
 const icons = {
@@ -21,7 +22,21 @@ const icons = {
 
 const Icon = ({ icon = 'cross', width = 20, height = 20, title, ...props }) => {
   const path = icons[icon] || icons.cross; // Defaulting again in case prop was given but invalid
-  return (
+  return icon === 'cardboard' ? (
+    <svg width={width} height={height} viewBox="0 0 512 512" {...props}>
+      <title>Icon courtesy of Freepik</title>
+      <path fill="#f5c99d" d="M442.413 300.486L256 201.034l-20.016 183.965L256 512h186.413z" />
+      <path fill="#f3e5cb" d="M69.587 300.486V512H256V201.034z" />
+      <path fill="#f5c99d" d="M256 201.034H69.587l-51.891 99.452h186.413z" />
+      <path fill="#e6a160" d="M256 201.034l51.891 99.452h186.413l-51.891-99.452z" />
+      <g fill="#42e0a6">
+        <path d="M241 0h30v92.78h-30zM145.824 24.902l27.718-11.482 35.508 85.722-27.718 11.48zM67.404 84.333L88.617 63.12l65.604 65.604-21.213 21.213z" />
+      </g>
+      <g fill="#00b066">
+        <path d="M357.765 128.72l65.604-65.604 21.213 21.213-65.604 65.604zM302.966 99.143l35.508-85.722 27.718 11.482-35.508 85.721z" />
+      </g>
+    </svg>
+  ) : (
     <svg width={width} height={height} {...props}>
       {title ? <title>{title}</title> : ''}
       <path d={path} />
