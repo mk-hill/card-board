@@ -7,16 +7,19 @@ import { card as c } from '../../theme';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100vh;
 `;
 
 const TitleSpan = styled.span`
+  /* padding: 1rem; */
   font-size: 1.2em;
-  margin-left: 1rem;
 `;
 
 const BoardNav = styled.nav`
+  padding: 0.5rem 1rem;
   background-color: ${c.colorDark};
-  flex: 1 1 4vh;
+  flex: 1 0 4vh;
+  min-height: max-content;
   color: ${c.bg};
   display: flex;
   align-items: center;
@@ -24,7 +27,7 @@ const BoardNav = styled.nav`
 
   svg {
     fill: currentColor;
-    margin-right: 1rem;
+
     cursor: pointer;
     transition: color ${c.transition};
 
@@ -35,8 +38,10 @@ const BoardNav = styled.nav`
 `;
 
 const BoardFooter = styled.footer`
+  padding: 0.2rem 1rem;
   background-color: ${c.colorDark};
-  flex: 1 1 3vh;
+  min-height: max-content;
+  flex: 1 0 3vh;
   color: ${c.bg};
   display: flex;
   align-items: center;

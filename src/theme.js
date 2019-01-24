@@ -1,3 +1,4 @@
+/**
 const color = {
   // Light
   l1: '#fff',
@@ -11,6 +12,7 @@ const color = {
   d3: '#85a6d8',
   d4: '#FDF7BB',
 };
+ */
 
 const [c1, c2, c3, c4, c5, c6] = ['#280C10', '#283F5E', '#556F93', '#93A7C4', '#A8BBD7', '#ECF0F6']; // 0C1728
 // ['#f9a255', '#d5fffd', '#85a6d8', '#FDF7BB', '#fff'];
@@ -32,7 +34,7 @@ export const item = {
   brColorHover: c3, //'#000', // Border color during hover
   brColorDrag: c3, //'red', // Border color while being dragged
   brColorFocus: c3, //'#123', // Border color during focus
-  brColorDarkest: c2,
+  // brColorDarkest: c2,
 
   get border() {
     return `${common._brWidth} solid ${this.brColor}`;
@@ -46,9 +48,6 @@ export const item = {
   // Border color determined by drag status
   getDragBr({ isDragging }) {
     return isDragging ? this.brColorDrag : this.brColor;
-  },
-  getDarkDragBr({ isDragging }) {
-    return isDragging ? this.brColorDarkest : this.brColorDrag;
   },
 
   getDragShadow({ isDragging }) {
@@ -65,7 +64,7 @@ export const card = {
   brColorHover: c4, //'#000', // Border color during hover
   brColorDrag: c4, //'red', // Border color during card drag
   titleIconHover: c2, // Icon color on hover
-  colorDark: c3,
+  colorDark: c3, // todo current used for board level colors, create separate theme variable if more are required
 
   get border() {
     return `${common._brWidth} solid ${this.brColor}`;

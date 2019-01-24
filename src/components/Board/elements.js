@@ -4,24 +4,26 @@ import { card as c } from '../../theme';
 
 import Card from '../Card';
 
+// Parent flex element = Wrapper in ./BoardWrapper.js
 export const CardsContainer = styled.div`
   background: linear-gradient(
     114.02807334855652deg,
     rgba(226, 235, 239, 1) 4.775390625%,
     rgba(208, 218, 224, 1) 98.13476562499999%
   );
+
   /* Text color inherited from here unless specified otherwise */
   color: ${c.color};
-  /* flex: 1 0 94vh; */
-  height: 93vh;
+  flex: 1 5 93vh;
   display: flex;
   overflow-x: scroll;
-  /* padding: 1rem; */
-  /* min-width: max-content; */
-  /* height: 99.5vh; */
 
   ::-webkit-scrollbar {
     width: 5px;
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-corner {
     background-color: transparent;
   }
 
@@ -57,6 +59,9 @@ export const AddCardForm = styled.form`
   input {
     box-sizing: border-box;
     margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem;
+    font-size: 0.9em;
     width: 100%;
     border: ${c.border};
     border-radius: ${c.brRadius};

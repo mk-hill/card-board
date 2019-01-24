@@ -6,7 +6,7 @@ import { card as c } from '../../theme';
 export const TitleFormContainer = styled.div`
   background-color: ${c.brColorDrag};
   padding: 0.3rem;
-  border: ${c.border};
+  /* border: ${c.border}; */
 
   form {
     display: flex;
@@ -110,12 +110,13 @@ export const CardTitle = styled.div`
 
 export const AddButton = styled.div`
   cursor: pointer;
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   align-items: center;
   padding-top: 0.3rem;
   width: 100%;
   bottom: 0;
+  background-color: ${c.bg};
   transition: background-color ${c.transition}, color ${c.transition};
 
   &:hover {
@@ -133,20 +134,21 @@ export const AddButton = styled.div`
 export const SubmitForm = styled.form`
   background-color: ${c.brColorHover};
   border-radius: 1px;
-  margin-top: -1.5rem;
+  /* margin-top: -1.5rem; */
   display: flex;
   justify-content: center;
+  z-index: 3;
 
   input {
     resize: none;
     box-sizing: border-box;
-    padding: 0.1rem;
+    padding: 0.2rem;
+    font-size: 0.9em;
     border: ${c.border};
     border-radius: ${c.brRadius};
     background-color: ${c.bg};
-    /* height: 100%; */
     width: 97%;
-    margin-top: 0.2rem;
+    margin-top: 0.25rem;
     margin-bottom: 1.5rem;
 
     &:focus {
@@ -181,26 +183,29 @@ export const SubmitForm = styled.form`
 
 export const ItemsContainer = styled.div`
   /* padding: 0.2rem; */
-  padding: .5rem .2rem 1.4rem .2rem;
+  /* padding: 0.5rem 0.2rem 1.4rem 0.2rem; */
+  padding: 0.5rem 0.2rem 0.1rem 0.2rem;
   background-color: ${props => (props.isDraggingOver ? c.bgDragOver : 'inherit')};
   transition: background-color ${c.transition};
-  flex: 1 1 6rem;
-  /* padding-bottom: 1.4rem; */
-  /* display: flex; */
-  /* border-radius: ${c.brRadius}; */
-  /* height: minmax(max-content, 100%); */
-  /* max-height: 50vh; */
-  /* z-index: 2; */
-  /* ~ div {
-    background-color: ${props => (props.isDraggingOver ? c.bgDragOver : 'inherit')};
-  } */
-  /* overflow: auto; */
-  /* overflow: scroll; */
-`;
-
-const ScrollList = styled.div`
-  max-height: 80vh;
+  min-height: 10vh;
+  max-height: 75vh;
   overflow-y: scroll;
+
+  @media only screen and (min-height: 1300px) {
+    max-height: 82vh;
+  }
+
+  @media only screen and (max-height: 950px) {
+    max-height: 72vh;
+  }
+
+  @media only screen and (max-height: 800px) {
+    max-height: 68vh;
+  }
+
+  @media only screen and (max-height: 600px) {
+    max-height: 60vh;
+  }
 
   ::-webkit-scrollbar {
     width: 3px;
@@ -208,8 +213,6 @@ const ScrollList = styled.div`
   }
 
   ::-webkit-scrollbar-thumb {
-    /* margin-left: 1rem; */
-    /* width: 3px !important; */
     background-color: ${c.brColor};
 
     &:hover {
@@ -228,11 +231,11 @@ export class ItemList extends Component {
     // No need to pass item Ids and addItem()
     const { items, itemIds, addItem, ...remainingProps } = this.props;
     return (
-      <ScrollList>
+      <>
         {items.map((item, index) => (
           <Item key={item.id} index={index} {...item} {...remainingProps} />
         ))}
-      </ScrollList>
+      </>
     );
   }
 }
