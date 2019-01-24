@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import swal from 'sweetalert';
 
 import Icon from '../Icon';
 import BoardWrapper from './BoardWrapper';
@@ -200,6 +201,30 @@ class Board extends Component {
     });
   };
 
+  deleteCardCheck = cardId => {
+    const itemsInCard = this.state.cards[cardId].itemIds.length;
+    if (itemsInCard) {
+      swal({
+        title: 'Are you sure?',
+        text: `${itemsInCard} ${itemsInCard > 1 ? 'items' : 'item'} in this card will be deleted as well.`,
+        icon: 'warning',
+        buttons: true,
+        // dangerMode: true,
+      }).then(willDelete => {
+        if (willDelete) {
+          swal(`Deleted "${this.state.cards[cardId].title}" and its contents.`, {
+            icon: 'success',
+          });
+          this.deleteCard(cardId);
+        } else {
+          // swal('Deletion canceled');
+        }
+      });
+    } else {
+      this.deleteCard(cardId);
+    }
+  };
+
   deleteCard = cardId => {
     const newCards = { ...this.state.cards };
     delete newCards[cardId];
@@ -237,7 +262,7 @@ class Board extends Component {
                       addItem={this.addItem}
                       deleteItem={this.deleteItem}
                       updateTitle={this.updateCard}
-                      deleteCard={this.deleteCard}
+                      deleteCard={this.deleteCardCheck}
                     />
                   );
                 })}

@@ -1,3 +1,24 @@
 body {
   font-family: 'Open Sans', sans-serif;
 }
+
+.swal-modal {
+  /* background-color: #ecf0f6; */
+  border-radius: 3px;
+}
+
+.swal-button {
+  background-color: #556f93;
+  border-radius: 3px;
+  color: #ecf0f6;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.swal-button--confirm {
+  background-color: #34859e;
+}
+
+.swal-button:hover {
+  background-color: #93a7c4;
+  color: #000;
+}
