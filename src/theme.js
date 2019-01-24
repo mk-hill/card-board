@@ -16,8 +16,8 @@ const [c1, c2, c3, c4, c5, c6] = ['#280C10', '#283F5E', '#556F93', '#93A7C4', '#
 // ['#f9a255', '#d5fffd', '#85a6d8', '#FDF7BB', '#fff'];
 
 const common = {
-  _brWidth: '2px', // Border width
-  brRadius: '5px', // Border radius
+  _brWidth: '1px', // Border width
+  brRadius: '3px', // Border radius
   transition: '.2s ease',
 };
 
@@ -32,6 +32,7 @@ export const item = {
   brColorHover: c3, //'#000', // Border color during hover
   brColorDrag: c3, //'red', // Border color while being dragged
   brColorFocus: c3, //'#123', // Border color during focus
+  brColorDarkest: c2,
 
   get border() {
     return `${common._brWidth} solid ${this.brColor}`;
@@ -45,6 +46,13 @@ export const item = {
   // Border color determined by drag status
   getDragBr({ isDragging }) {
     return isDragging ? this.brColorDrag : this.brColor;
+  },
+  getDarkDragBr({ isDragging }) {
+    return isDragging ? this.brColorDarkest : this.brColorDrag;
+  },
+
+  getDragShadow({ isDragging }) {
+    return isDragging ? `5px 5px 10px 1px ${this.brColor}80;` : `1px 1px 5px -1px ${this.brColor}99;`;
   },
 };
 
@@ -60,6 +68,10 @@ export const card = {
 
   get border() {
     return `${common._brWidth} solid ${this.brColor}`;
+  },
+
+  getDragShadow({ isDragging }) {
+    return isDragging ? `5px 5px 15px 1px ${this.brColorHover}60;` : `2px 2px 10px -2px ${this.brColorHover}99;`;
   },
 
   // Border color determined by drag status

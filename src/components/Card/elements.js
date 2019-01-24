@@ -15,7 +15,7 @@ export const TitleFormContainer = styled.div`
 
   input {
     padding: 0.2rem;
-    flex: 100px 1 1;
+    flex: 1 1 100px;
     font-size: 0.9em;
     border: ${c.border};
     background-color: ${c.bg};
@@ -54,8 +54,9 @@ export const CardBody = styled.div`
   flex-direction: column;
 
   overflow: hidden;
-  transition: border-color ${c.transition};
+  transition: border-color ${c.transition}, box-shadow ${c.transition};
   border-color: ${props => c.getDragBr(props)};
+  box-shadow: ${props => c.getDragShadow(props)};
 
   &:hover {
     border-color: ${c.brColorHover};
@@ -73,6 +74,7 @@ export const CardTitle = styled.div`
   color: ${props => (props.isDragging ? c.bg : 'inherit')};
 
   h3 {
+    font-weight: normal;
     display: inline;
   }
 
@@ -140,7 +142,7 @@ export const SubmitForm = styled.form`
     border-radius: ${c.brRadius};
     background-color: ${c.bg};
     /* height: 100%; */
-    width: 99%;
+    width: 98%;
     margin-top: 0.1rem;
     margin-bottom: 1.5rem;
 
@@ -179,7 +181,7 @@ export const ItemsContainer = styled.div`
   padding: .5rem .2rem 1.4rem .2rem;
   background-color: ${props => (props.isDraggingOver ? c.bgDragOver : 'inherit')};
   transition: background-color ${c.transition};
-  flex: 6rem 1 1;
+  flex: 1 1 6rem;
   /* padding-bottom: 1.4rem; */
   /* display: flex; */
   /* border-radius: ${c.brRadius}; */

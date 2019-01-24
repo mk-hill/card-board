@@ -10,6 +10,7 @@ export const ItemBody = styled.div`
   transition: border-color ${i.transition}, background-color ${i.transition};
   background-color: ${props => i.getDragBg(props)};
   border-color: ${props => i.getDragBr(props)};
+  box-shadow: ${props => i.getDragShadow(props)};
   border-radius: ${i.brRadius};
 
   display: flex;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Icon from '../Icon';
+import BoardWrapper from './BoardWrapper';
 import { CardsContainer, AddCardButton, AddCardForm, PureCard as Card } from './elements';
 
 import { BoardData as Data } from '../../data';
@@ -212,69 +213,71 @@ class Board extends Component {
   };
 
   render() {
-    const { cards, items, cardOrder, addingCard } = this.state;
+    const { cards, items, cardOrder, addingCard, title } = this.state;
     return (
-      <DragDropContext
-        onDragEnd={this.handleDrop}
-        // onDragStart={this.testDragStart}
-        // onDragUpdate={this.testDragUpdate}
-      >
-        {/* Cards move horizontally within board, items move vertically within card(s) */}
-        <Droppable droppableId="Board" direction="horizontal" type="card">
-          {provided => (
-            <CardsContainer {...provided.droppableProps} ref={provided.innerRef}>
-              {cardOrder.map((cardId, index) => {
-                const card = cards[cardId];
-                return (
-                  <Card
-                    key={cardId}
-                    card={card}
-                    items={items}
-                    index={index}
-                    updateItem={this.updateItem}
-                    addItem={this.addItem}
-                    deleteItem={this.deleteItem}
-                    updateTitle={this.updateCard}
-                    deleteCard={this.deleteCard}
-                  />
-                );
-              })}
-              {provided.placeholder}
-              {addingCard ? (
-                <AddCardForm onSubmit={this.addCard}>
-                  Enter card title:
-                  <input
-                    type="text"
-                    value={this.state.newCardTitle}
-                    onChange={e => this.setState({ newCardTitle: e.target.value })}
-                  />
-                  <label>
-                    <input type="submit" style={{ display: 'none' }} />
-                    <Icon icon="check" title="Submit" />
-                  </label>
-                  <Icon
-                    id="cancelNewCard"
-                    title="Cancel"
+      <BoardWrapper title={title}>
+        <DragDropContext
+          onDragEnd={this.handleDrop}
+          // onDragStart={this.testDragStart}
+          // onDragUpdate={this.testDragUpdate}
+        >
+          {/* Cards move horizontally within board, items move vertically within card(s) */}
+          <Droppable droppableId="Board" direction="horizontal" type="card">
+            {provided => (
+              <CardsContainer {...provided.droppableProps} ref={provided.innerRef}>
+                {cardOrder.map((cardId, index) => {
+                  const card = cards[cardId];
+                  return (
+                    <Card
+                      key={cardId}
+                      card={card}
+                      items={items}
+                      index={index}
+                      updateItem={this.updateItem}
+                      addItem={this.addItem}
+                      deleteItem={this.deleteItem}
+                      updateTitle={this.updateCard}
+                      deleteCard={this.deleteCard}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+                {addingCard ? (
+                  <AddCardForm onSubmit={this.addCard}>
+                    Enter card title:
+                    <input
+                      type="text"
+                      value={this.state.newCardTitle}
+                      onChange={e => this.setState({ newCardTitle: e.target.value })}
+                    />
+                    <label>
+                      <input type="submit" style={{ display: 'none' }} />
+                      <Icon icon="check" title="Submit" />
+                    </label>
+                    <Icon
+                      id="cancelNewCard"
+                      title="Cancel"
+                      onClick={() => {
+                        // Wipe input from state after closing form
+                        this.setState(prev => ({ addingCard: !prev.addingCard, newCardTitle: '' }));
+                      }}
+                    />
+                  </AddCardForm>
+                ) : (
+                  <AddCardButton
                     onClick={() => {
-                      // Wipe input from state after closing form
-                      this.setState(prev => ({ addingCard: !prev.addingCard, newCardTitle: '' }));
+                      this.setState(prev => ({ addingCard: !prev.addingCard }));
                     }}
-                  />
-                </AddCardForm>
-              ) : (
-                <AddCardButton
-                  onClick={() => {
-                    this.setState(prev => ({ addingCard: !prev.addingCard }));
-                  }}
-                >
-                  <Icon icon="squaredPlus" />
-                  Add Card
-                </AddCardButton>
-              )}
-            </CardsContainer>
-          )}
-        </Droppable>
-      </DragDropContext>
+                  >
+                    <Icon icon="squaredPlus" />
+                    Add Card
+                  </AddCardButton>
+                )}
+              </CardsContainer>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </BoardWrapper>
     );
   }
 }

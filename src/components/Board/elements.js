@@ -12,9 +12,11 @@ export const CardsContainer = styled.div`
   );
   /* Text color inherited from here unless specified otherwise */
   color: ${c.color};
+  /* flex: 1 0 94vh; */
+  height: 94vh;
   display: flex;
-  min-width: max-content;
-  height: 99.5vh;
+  /* min-width: max-content; */
+  /* height: 99.5vh; */
 `;
 
 export const AddCardForm = styled.form`
