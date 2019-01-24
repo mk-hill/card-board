@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Icon from '../Icon';
-import { CardBody, CardTitle, ItemsContainer, SubmitForm, AddButton, ItemList } from './elements';
+import { CardBody, CardTitle, TitleFormContainer, ItemsContainer, SubmitForm, AddButton, ItemList } from './elements';
 
 class Card extends Component {
   state = {
@@ -63,13 +63,15 @@ class Card extends Component {
           <CardBody {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
             {/* Cards can only be dragged from their title */}
             {editingTitle ? (
-              <form onSubmit={submitNewTitle}>
-                <input type="text" name="title" value={title} onChange={handleChange} />
-                <label>
-                  <input type="submit" style={{ display: 'none' }} />
-                  <Icon icon="check" title="Submit" />
-                </label>
-              </form>
+              <TitleFormContainer>
+                <form onSubmit={submitNewTitle}>
+                  <input type="text" name="title" value={title} onChange={handleChange} />
+                  <label>
+                    <input type="submit" style={{ display: 'none' }} />
+                    <Icon icon="check" title="Submit" />
+                  </label>
+                </form>
+              </TitleFormContainer>
             ) : (
               <CardTitle {...provided.dragHandleProps} isDragging={snapshot.isDragging}>
                 <h3>{title}</h3> <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
@@ -121,12 +123,10 @@ class Card extends Component {
                 />
               </SubmitForm>
             ) : (
-              <>
-                <AddButton onClick={toggleAddMode} title="Add a new item to your card">
-                  <Icon icon="plus" />
-                  Add item
-                </AddButton>
-              </>
+              <AddButton onClick={toggleAddMode} title="Add a new item to your card">
+                <Icon icon="plus" />
+                Add item
+              </AddButton>
             )}
           </CardBody>
         )}

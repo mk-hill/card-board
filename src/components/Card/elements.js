@@ -3,6 +3,43 @@ import styled from 'styled-components';
 import Item from '../Item';
 import { card as c } from '../../theme';
 
+export const TitleFormContainer = styled.div`
+  background-color: ${c.brColorDrag};
+  padding: 0.3rem 0.3rem 0.37rem 0.3rem;
+
+  form {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+  }
+
+  input {
+    padding: 0.2rem;
+    flex: 100px 1 1;
+    font-size: 0.9em;
+    border: ${c.border};
+    background-color: ${c.bg};
+    border-radius: ${c.brRadius};
+
+    &:focus {
+      outline: none;
+      border-color: ${c.brColorHover};
+    }
+  }
+
+  svg {
+    margin-top: 0.2rem;
+    color: ${c.bg};
+    fill: currentColor;
+    cursor: pointer;
+    transition: color ${c.transition};
+
+    &:hover {
+      color: ${c.titleIconHover};
+    }
+  }
+`;
+
 export const CardBody = styled.div`
   position: relative;
   /* color: ${c.color}; */
@@ -17,7 +54,6 @@ export const CardBody = styled.div`
   flex-direction: column;
 
   overflow: hidden;
-
   transition: border-color ${c.transition};
   border-color: ${props => c.getDragBr(props)};
 
