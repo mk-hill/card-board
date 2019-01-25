@@ -54,8 +54,8 @@ class Board extends Component {
   };
 
   updateLocalStorage = () => {
-    const { id, items, cards, cardOrder } = this.state;
-    localStorage.setItem(id, JSON.stringify({ items, cards, cardOrder }));
+    const { id, title, items, cards, cardOrder } = this.state;
+    localStorage.setItem(id, JSON.stringify({ title, items, cards, cardOrder }));
   };
 
   testDragStart = () => {

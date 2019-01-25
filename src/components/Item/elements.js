@@ -12,7 +12,7 @@ export const ItemBody = styled.div`
   border-color: ${props => i.getDragBr(props)};
   box-shadow: ${props => i.getDragShadow(props)};
   border-radius: ${i.brRadius};
-  cursor: pointer !important;
+  cursor: pointer ${props => i.getDragOverride(props)};
 
   display: flex;
   position: relative;

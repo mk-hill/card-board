@@ -53,6 +53,13 @@ class Item extends Component {
     this.toggleEdit();
   };
 
+  // Not necessary if edit toggles on double click instead of single click
+  handleClick = e => {
+    if (e.target.tagName.toLowerCase() !== 'a') {
+      this.toggleEdit();
+    }
+  };
+
   render() {
     const { id, index, isLocked, cardId, deleteItem } = this.props;
     const { isBeingEdited, text } = this.state;
@@ -68,12 +75,13 @@ class Item extends Component {
             2nd arg can be used to style component during drag */}
         {(provided, snapshot) => (
           <ItemBody
+            title="Double click to edit"
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
             isDragDisabled={isLocked}
-            onClick={toggleEdit}
+            onDoubleClick={toggleEdit}
           >
             {/* <Handle {...provided.dragHandleProps} /> */}
             {isBeingEdited ? (
@@ -88,7 +96,7 @@ class Item extends Component {
               </form>
             ) : (
               <>
-                {text}
+                {text ? <FormattedItemText text={text[0]} /> : text}
                 {/* <Icon icon="pencil" viewBox="0 -3 26 26" onClick={toggleEdit} title="Edit" /> */}
                 <Icon onClick={() => deleteItem(cardId, id, index)} title={'Delete'} />
               </>
@@ -99,5 +107,31 @@ class Item extends Component {
     );
   }
 }
+
+// todo support more than one url
+// todo fix render and edit bugs
+const FormattedItemText = ({ text, ...props }) => {
+  const urlPattern = /\[([^\[\]]+)\]\(([^)]+)\)/g;
+  const links = text.match(urlPattern);
+  let splitText;
+  if (links) {
+    splitText = text.split(links[0]);
+  }
+  return (
+    <>
+      {splitText ? (
+        <p>
+          {splitText[0]}
+          <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+            {links[0].slice(1, links[0].indexOf(']'))}
+          </a>
+          {splitText[1]}
+        </p>
+      ) : (
+        text
+      )}
+    </>
+  );
+};
 
 export default Item;

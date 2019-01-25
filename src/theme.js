@@ -50,6 +50,11 @@ export const item = {
     return isDragging ? this.brColorDrag : this.brColor;
   },
 
+  // Override  based on drag status
+  getDragOverride({ isDragging }) {
+    return isDragging ? '' : '!important';
+  },
+
   getDragShadow({ isDragging }) {
     return isDragging ? `5px 5px 10px 1px ${this.brColor}80;` : `1px 1px 5px -1px ${this.brColor}99;`;
   },

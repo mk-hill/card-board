@@ -207,6 +207,18 @@ export const ItemsContainer = styled.div`
     max-height: 60vh;
   }
 
+  @media only screen and (max-height: 600px) {
+    max-height: 60vh;
+  }
+
+  @media only screen and (max-height: 450px) {
+    max-height: 55vh;
+  }
+
+  @media only screen and (max-height: 380px) {
+    max-height: 50vh;
+  }
+
   ::-webkit-scrollbar {
     width: 3px;
     background-color: transparent;
