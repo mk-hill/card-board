@@ -31,8 +31,26 @@ class Board extends Component {
     });
   };
 
+  componentDidMount = () => {
+    document.addEventListener('keydown', this.cancelInputOnEsc, true);
+  };
+
+  componentWillUnmount = () => {
+    document.removeEventListener('keydown', this.cancelInputOnEsc, true);
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
     this.updateLocalStorage();
+  };
+
+  // Cancel edit state and wipe input value on escape keypress
+  cancelInputOnEsc = e => {
+    if (e.key === 'Escape') {
+      this.setState({
+        addingCard: false,
+        newCardTitle: '',
+      });
+    }
   };
 
   updateLocalStorage = () => {
@@ -271,6 +289,7 @@ class Board extends Component {
                   <AddCardForm onSubmit={this.addCard}>
                     Enter card title:
                     <input
+                      autoFocus
                       type="text"
                       value={this.state.newCardTitle}
                       onChange={e => this.setState({ newCardTitle: e.target.value })}

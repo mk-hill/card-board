@@ -12,6 +12,7 @@ export const ItemBody = styled.div`
   border-color: ${props => i.getDragBr(props)};
   box-shadow: ${props => i.getDragShadow(props)};
   border-radius: ${i.brRadius};
+  cursor: pointer !important;
 
   display: flex;
   position: relative;
@@ -49,9 +50,9 @@ export const ItemBody = styled.div`
     cursor: pointer;
     transition: opacity ${i.transition} fill 0.5s ease;
 
-    :first-of-type {
+    /* :first-of-type {
       right: 1rem;
-    }
+    } */
 
     &:hover,
     &:focus {

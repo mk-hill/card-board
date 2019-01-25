@@ -10,6 +10,26 @@ class Item extends Component {
     text: '',
   };
 
+  componentDidMount() {
+    if (!this.state.text) {
+      this.setState({ text: this.props.text });
+    }
+    document.addEventListener('keydown', this.cancelInputOnEsc, true);
+  }
+
+  componentWillUnmount = () => {
+    document.removeEventListener('keydown', this.cancelInputOnEsc, true);
+  };
+
+  // Cancel edit state on escape keypress
+  cancelInputOnEsc = e => {
+    if (e.key === 'Escape') {
+      this.setState({
+        isBeingEdited: false,
+      });
+    }
+  };
+
   toggleEdit = () => {
     this.setState(prevState => ({
       isBeingEdited: !prevState.isBeingEdited,
@@ -33,12 +53,6 @@ class Item extends Component {
     this.toggleEdit();
   };
 
-  componentDidMount() {
-    if (!this.state.text) {
-      this.setState({ text: this.props.text });
-    }
-  }
-
   render() {
     const { id, index, isLocked, cardId, deleteItem } = this.props;
     const { isBeingEdited, text } = this.state;
@@ -59,11 +73,12 @@ class Item extends Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
             isDragDisabled={isLocked}
+            onClick={toggleEdit}
           >
             {/* <Handle {...provided.dragHandleProps} /> */}
             {isBeingEdited ? (
               <form onSubmit={submitUpdate}>
-                <input type="text" value={text} onChange={handleChange} />
+                <input autoFocus type="text" value={text} onChange={handleChange} />
                 {/* label and input are only here to tie Icon to submit action, 
                   alternatively create new click handler to form.submit() && submitUpdate() */}
                 <label>
@@ -74,7 +89,7 @@ class Item extends Component {
             ) : (
               <>
                 {text}
-                <Icon icon="pencil" viewBox="0 -3 26 26" onClick={toggleEdit} title="Edit" />
+                {/* <Icon icon="pencil" viewBox="0 -3 26 26" onClick={toggleEdit} title="Edit" /> */}
                 <Icon onClick={() => deleteItem(cardId, id, index)} title={'Delete'} />
               </>
             )}

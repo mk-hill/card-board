@@ -16,7 +16,24 @@ class Card extends Component {
     if (!this.state.title) {
       this.setState({ title: this.props.title });
     }
+
+    document.addEventListener('keydown', this.cancelInputOnEsc, true);
   }
+
+  componentWillUnmount = () => {
+    document.removeEventListener('keydown', this.cancelInputOnEsc, true);
+  };
+
+  // Cancel any forms and reset input field on escape keypress
+  cancelInputOnEsc = e => {
+    if (e.key === 'Escape') {
+      this.setState({
+        editingTitle: false,
+        addingItem: false,
+        newItemText: '',
+      });
+    }
+  };
 
   toggleTitleForm = () => {
     this.setState(prevState => ({
@@ -65,7 +82,7 @@ class Card extends Component {
             {editingTitle ? (
               <TitleFormContainer>
                 <form onSubmit={submitNewTitle}>
-                  <input type="text" name="title" value={title} onChange={handleChange} />
+                  <input autoFocus type="text" name="title" value={title} onChange={handleChange} />
                   <label>
                     <input type="submit" style={{ display: 'none' }} />
                     <Icon icon="check" title="Submit" />
@@ -102,6 +119,7 @@ class Card extends Component {
             {addingItem ? (
               <SubmitForm onSubmit={submitNewItem}>
                 <input
+                  autoFocus
                   type="text"
                   name="newItemText"
                   value={newItemText}
