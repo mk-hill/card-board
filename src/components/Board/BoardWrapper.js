@@ -60,6 +60,8 @@ const BoardWrapper = ({ children, title }) => {
       </BoardNav>
       {children}
       <BoardFooter>
+        {/* <span style={{ letterSpacing: '2px' }}>card</span> <Icon icon="cardboard" />{' '}
+        <span style={{ letterSpacing: '-.15em' }}>board</span> */}
         card <Icon icon="cardboard" /> board
       </BoardFooter>
     </Wrapper>

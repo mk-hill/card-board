@@ -75,7 +75,7 @@ class Item extends Component {
             2nd arg can be used to style component during drag */}
         {(provided, snapshot) => (
           <ItemBody
-            title="Double click to edit"
+            title="Double click to edit item"
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -111,27 +111,39 @@ class Item extends Component {
 // todo support more than one url
 // todo parse string into actual url target
 const FormattedItemText = ({ text, ...props }) => {
-  console.log('​FormattedItemText -> text', text);
-  let str = text;
-  if (Array.isArray(text)) {
-    str = text[0];
+  let str = Array.isArray(text) ? text[0] : text; // grab string out of text prop is array was passed in
+
+  const urlPattern = /\[([^\[\]]+)\]\(([^)]+)\)/g; // pattern to match [markdown](url) format
+
+  // Match strings and parse them into objects: { text, url }, map objects into links array
+  // (empty array if none were found)
+  const links = (str.match(urlPattern) || []).map(string => ({
+    text: string.slice(1, string.indexOf(']')),
+    url: string.slice(string.indexOf('(') + 1, -1),
+  }));
+
+  let splitText; // Will become array of strings split at link points if links exist
+
+  if (links.length) {
+    // Could probably come up with a more unique identifier in case users type '**linkwashere**'
+    str = str.replace(urlPattern, '**linkwashere**');
+    splitText = str.split('**linkwashere**');
   }
-  const urlPattern = /\[([^\[\]]+)\]\(([^)]+)\)/g;
-  const links = str.match(urlPattern);
-  let splitText = false;
-  if (links && links.length) {
-    console.log('​FormattedItemText -> links', links);
-    splitText = str.split(links[0]);
-  }
+
   return (
     <>
       {splitText ? (
-        <p>
-          {splitText[0]}
-          <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
-            {links[0].slice(1, links[0].indexOf(']'))}
-          </a>
-          {splitText[1]}
+        <p style={{ margin: 0 }}>
+          {splitText.map((text, i) => (
+            <>
+              {text}
+              {links[i] ? (
+                <a href={links[i].url} target="_blank" rel="noopener noreferrer">
+                  {links[i].text}
+                </a>
+              ) : null}
+            </>
+          ))}
         </p>
       ) : (
         text

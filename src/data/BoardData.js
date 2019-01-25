@@ -64,7 +64,7 @@ const random = {
   itemTitles: [
     'Hailing frequencies open.',
     'Spawn more overlords.',
-    '[Nuclear](https://www.google.com) launch detected.',
+    '[Nuclear](https://www.google.com) launch [detected](https://www.google.com).',
     'You must construct additional Pylons.',
     'Carrier has arrived.',
     'Not enough minerals.',
@@ -79,7 +79,7 @@ const random = {
     'A architecto magnam sed beatae maxime adipisci deserunt harum dolorum, [labore](https://www.google.com) inventore quaerat et rem, officia necessitatibus cumque ex aliquam. Iusto, atque.',
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore incidunt totam vero, libero nihil earum.',
     'Fugit quae, earum dicta, soluta voluptatum quod iste [assumenda](https://www.google.com) neque illum quos quaerat nulla tempore quas?',
-    'Et excepturi amet architecto[ recusandae quaerat provident](https://www.google.com), vel illo repellendus dolores.',
+    'Et excepturi [amet](https://www.google.com) architecto [recusandae quaerat provident](https://www.google.com), vel illo repellendus dolores.',
     'Ullam cupiditate sint animi sunt atque nemo molestias inventore in iusto adipisci distinctio dolore saepe, quia commodi repellat?',
   ],
 };
