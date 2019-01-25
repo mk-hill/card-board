@@ -96,7 +96,7 @@ class Item extends Component {
               </form>
             ) : (
               <>
-                {text ? <FormattedItemText text={text[0]} /> : text}
+                {text ? <FormattedItemText text={text} /> : text}
                 {/* <Icon icon="pencil" viewBox="0 -3 26 26" onClick={toggleEdit} title="Edit" /> */}
                 <Icon onClick={() => deleteItem(cardId, id, index)} title={'Delete'} />
               </>
@@ -109,13 +109,19 @@ class Item extends Component {
 }
 
 // todo support more than one url
-// todo fix render and edit bugs
+// todo parse string into actual url target
 const FormattedItemText = ({ text, ...props }) => {
+  console.log('​FormattedItemText -> text', text);
+  let str = text;
+  if (Array.isArray(text)) {
+    str = text[0];
+  }
   const urlPattern = /\[([^\[\]]+)\]\(([^)]+)\)/g;
-  const links = text.match(urlPattern);
-  let splitText;
-  if (links) {
-    splitText = text.split(links[0]);
+  const links = str.match(urlPattern);
+  let splitText = false;
+  if (links && links.length) {
+    console.log('​FormattedItemText -> links', links);
+    splitText = str.split(links[0]);
   }
   return (
     <>
