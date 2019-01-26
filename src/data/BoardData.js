@@ -4,7 +4,7 @@ import ItemData from './ItemData';
 
 export default class BoardData {
   constructor(title = 'Enter board title', dummy = false) {
-    this.id = dummy ? 'dummyData' : uuid();
+    this.id = dummy ? 'starterBoard' : uuid();
     this.title = title;
     this.items = {};
     this.cards = {};
@@ -40,6 +40,38 @@ export default class BoardData {
     for (let i = 0; i < minItems + v; i++) {
       data.addItem(data.cardOrder[random.numFromZero(data.cardOrder.length)], random.item, false);
     }
+    return data;
+  }
+
+  static generateStarter() {
+    const data = new BoardData('Your First Board', true);
+    const cards = ['Welcome', 'Moving things', 'Drag me from my title!'].map(title => data.addCard(title, false));
+    const welcomeItems = [
+      'Welcome to cardboard!',
+      'Organize your thoughts, plans, and anything else you have in mind.',
+      "You're welcome to use cardboard, though feel free to check out [Trello](https://trello.com/) (cardboard's inspiration, to say the least) for a more professional solution.",
+    ];
+    welcomeItems.forEach(text => data.addItem(cards[0].id, text, false));
+
+    const moveItems = [
+      'Drag & drop or use your keyboard to move cards and items.',
+      'Drag items from anywhere on their body.',
+      'To drag and drop using a touchscreen, simply press down on the item or card title until its color changes, and drag it to your desired location.',
+      'For keyboard usage: select your target with Tab, lift it with Space, move it with your arrow keys and place it down with Space again.',
+    ];
+    moveItems.forEach(text => data.addItem(cards[1].id, text, false));
+
+    const howToItems = [
+      "Add as many items and cards as you'd like, cardboard will let you scroll through them.",
+      'Double click an item to edit it.',
+      'Further options will appear as you hover over items or card title bars.',
+      'You can also links to your items using inline [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links) syntax!',
+      "[text you want to appear](target url) Please don't format me!",
+      'If you dont want cardboard to format your item title, just ask it nicely.',
+      // `Adding "Please don't format me!" to the end of your title usually does the trick.`,
+    ];
+
+    howToItems.forEach(text => data.addItem(cards[2].id, text, false));
     return data;
   }
 }

@@ -8,7 +8,7 @@ import { CardsContainer, AddCardButton, AddCardForm, PureCard as Card } from './
 
 import { BoardData as Data } from '../../data';
 
-const dummyData = Data.generateDummy();
+const dummyData = Data.generateStarter();
 
 class Board extends Component {
   state = {
@@ -40,7 +40,7 @@ class Board extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    this.updateLocalStorage();
+    this.updateLocalStorage(); // Update local storage on each change
   };
 
   // Cancel edit state and wipe input value on escape keypress
