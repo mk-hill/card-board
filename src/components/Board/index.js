@@ -11,25 +11,29 @@ import { BoardData as Data } from '../../data';
 const dummyData = Data.generateStarter();
 
 class Board extends Component {
-  state = {
-    ...dummyData,
-    addingCard: false,
-    newCardTitle: '',
-  };
+  constructor(props) {
+    super(props);
 
-  componentWillMount = () => {
-    // console.log(this.state);
-    let data;
-    const storedData = localStorage.getItem(this.state.id);
-    if (storedData) {
-      data = JSON.parse(storedData);
-    } else {
-      data = dummyData;
-    }
-    this.setState({
+    const id = this.props.id ? this.props.id : dummyData.id;
+
+    const storedData = localStorage.getItem(id);
+
+    const data = storedData ? JSON.parse(storedData) : dummyData;
+    // if (storedData) {
+    //   data = JSON.parse(storedData);
+    // } else {
+    //   data = dummyData;
+    // }
+
+    this.state = {
       ...data,
-    });
-  };
+      addingCard: false,
+      newCardTitle: '',
+    };
+  }
+
+  // componentWillMount = () => {
+  // };
 
   componentDidMount = () => {
     document.addEventListener('keydown', this.cancelInputOnEsc, true);
@@ -54,8 +58,9 @@ class Board extends Component {
   };
 
   updateLocalStorage = () => {
+    console.log(this.state);
     const { id, title, items, cards, cardOrder } = this.state;
-    localStorage.setItem(id, JSON.stringify({ title, items, cards, cardOrder }));
+    localStorage.setItem(id, JSON.stringify({ id, title, items, cards, cardOrder }));
   };
 
   testDragStart = () => {

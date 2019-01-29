@@ -44,12 +44,12 @@ export default class BoardData {
   }
 
   static generateStarter() {
-    const data = new BoardData('Your First Board', true);
+    const data = new BoardData('Your cardboard', true);
     const cards = ['Welcome', 'Moving things', 'Drag me from my title!'].map(title => data.addCard(title, false));
     const welcomeItems = [
       'Welcome to cardboard!',
       'Organize your thoughts, plans, and anything else you have in mind.',
-      "You're welcome to use cardboard, though feel free to check out [Trello](https://trello.com/) (cardboard's inspiration, to say the least) for a more professional solution.",
+      'Cardboard was inspired by [Trello](https://trello.com/). Check it out for a more professional solution.',
     ];
     welcomeItems.forEach(text => data.addItem(cards[0].id, text, false));
 
@@ -66,7 +66,7 @@ export default class BoardData {
       'Double click an item to edit it.',
       'Further options will appear as you hover over items or card title bars.',
       'You can also links to your items using inline [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links) syntax!',
-      "[text you want to appear](target url) Please don't format me!",
+      "[text to display](target url) Please don't format me!",
       'If you dont want cardboard to format your item title, just ask it nicely.',
       // `Adding "Please don't format me!" to the end of your title usually does the trick.`,
     ];

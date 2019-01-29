@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React from 'react';
-import { withTheme } from 'styled-components';
 
 // Icons courtesy of icomoon.io
 const icons = {
