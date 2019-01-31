@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import swal from 'sweetalert';
+import { Transition } from 'react-spring';
 
 import Icon from '../Icon';
 import BoardWrapper from './BoardWrapper';
@@ -290,38 +291,50 @@ class Board extends Component {
                   );
                 })}
                 {provided.placeholder}
-                {addingCard ? (
-                  <AddCardForm onSubmit={this.addCard}>
-                    Enter card title:
-                    <input
-                      autoFocus
-                      type="text"
-                      value={this.state.newCardTitle}
-                      onChange={e => this.setState({ newCardTitle: e.target.value })}
-                    />
-                    <label>
-                      <input type="submit" style={{ display: 'none' }} />
-                      <Icon icon="check" title="Submit" />
-                    </label>
-                    <Icon
-                      id="cancelNewCard"
-                      title="Cancel"
-                      onClick={() => {
-                        // Wipe input from state after closing form
-                        this.setState(prev => ({ addingCard: !prev.addingCard, newCardTitle: '' }));
-                      }}
-                    />
-                  </AddCardForm>
-                ) : (
-                  <AddCardButton
-                    onClick={() => {
-                      this.setState(prev => ({ addingCard: !prev.addingCard }));
-                    }}
-                  >
-                    <Icon icon="squaredPlus" />
-                    Add Card
-                  </AddCardButton>
-                )}
+                <Transition
+                  items={addingCard}
+                  from={{ opacity: 0.5 }}
+                  enter={{ opacity: 1 }}
+                  leave={{ display: 'none' }}
+                >
+                  {addingCard =>
+                    addingCard
+                      ? ({ opacity, display }) => (
+                          <AddCardForm style={{ opacity, display }} onSubmit={this.addCard}>
+                            Enter card title:
+                            <input
+                              autoFocus
+                              type="text"
+                              value={this.state.newCardTitle}
+                              onChange={e => this.setState({ newCardTitle: e.target.value })}
+                            />
+                            <label>
+                              <input type="submit" style={{ display: 'none' }} />
+                              <Icon icon="check" title="Submit" />
+                            </label>
+                            <Icon
+                              id="cancelNewCard"
+                              title="Cancel"
+                              onClick={() => {
+                                // Wipe input from state after closing form
+                                this.setState(prev => ({ addingCard: !prev.addingCard, newCardTitle: '' }));
+                              }}
+                            />
+                          </AddCardForm>
+                        )
+                      : ({ opacity, display }) => (
+                          <AddCardButton
+                            style={{ opacity, display }}
+                            onClick={() => {
+                              this.setState(prev => ({ addingCard: !prev.addingCard }));
+                            }}
+                          >
+                            <Icon icon="squaredPlus" />
+                            Add Card
+                          </AddCardButton>
+                        )
+                  }
+                </Transition>
               </CardsContainer>
             )}
           </Droppable>

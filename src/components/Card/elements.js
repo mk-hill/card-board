@@ -5,7 +5,7 @@ import { card as c } from '../../theme';
 
 export const TitleFormContainer = styled.div`
   background-color: ${c.brColorDrag};
-  padding: 0.3rem;
+  padding: 0.34rem;
   /* border: ${c.border}; */
 
   form {

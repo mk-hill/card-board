@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Transition } from 'react-spring';
 
 import Icon from '../Icon';
 import { CardBody, CardTitle, TitleFormContainer, ItemsContainer, SubmitForm, AddButton, ItemList } from './elements';
@@ -79,22 +80,32 @@ class Card extends Component {
         {(provided, snapshot) => (
           <CardBody {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
             {/* Cards can only be dragged from their title */}
-            {editingTitle ? (
-              <TitleFormContainer>
-                <form onSubmit={submitNewTitle}>
-                  <input autoFocus type="text" name="title" value={title} onChange={handleChange} />
-                  <label>
-                    <input type="submit" style={{ display: 'none' }} />
-                    <Icon icon="check" title="Submit" />
-                  </label>
-                </form>
-              </TitleFormContainer>
-            ) : (
-              <CardTitle {...provided.dragHandleProps} isDragging={snapshot.isDragging}>
-                <h3>{title}</h3> <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
-                <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
-              </CardTitle>
-            )}
+            <Transition items={editingTitle} from={{ opacity: 0.5 }} enter={{ opacity: 1 }} leave={{ display: 'none' }}>
+              {editingTitle =>
+                editingTitle
+                  ? ({ opacity, display }) => (
+                      <TitleFormContainer style={{ opacity, display }}>
+                        <form onSubmit={submitNewTitle}>
+                          <input autoFocus type="text" name="title" value={title} onChange={handleChange} />
+                          <label>
+                            <input type="submit" style={{ display: 'none' }} />
+                            <Icon icon="check" title="Submit" />
+                          </label>
+                        </form>
+                      </TitleFormContainer>
+                    )
+                  : ({ opacity, display }) => (
+                      <CardTitle
+                        style={{ opacity, display }}
+                        {...provided.dragHandleProps}
+                        isDragging={snapshot.isDragging}
+                      >
+                        <h3>{title}</h3> <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
+                        <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
+                      </CardTitle>
+                    )
+              }
+            </Transition>
 
             {/* Droppable requires unique droppableId prop, uses render props pattern
             Expects its child to be a func which returns a component
@@ -116,36 +127,51 @@ class Card extends Component {
                 </ItemsContainer>
               )}
             </Droppable>
-            {addingItem ? (
-              <SubmitForm onSubmit={submitNewItem}>
-                <input
-                  autoFocus
-                  type="text"
-                  name="newItemText"
-                  value={newItemText}
-                  onChange={handleChange}
-                  placeholder="Enter item text"
-                />
-                <label>
-                  <input type="submit" style={{ display: 'none' }} />
-                  <Icon id="submitItem" icon="check" title="Submit" />
-                </label>
-                <Icon
-                  id="cancelItem"
-                  title="Cancel"
-                  onClick={() => {
-                    toggleAddMode();
-                    // Wipe input from state after closing form
-                    this.setState({ newItemText: '' });
-                  }}
-                />
-              </SubmitForm>
-            ) : (
-              <AddButton onClick={toggleAddMode} title="Add a new item to your card">
-                <Icon icon="plus" />
-                Add item
-              </AddButton>
-            )}
+            <Transition
+              items={addingItem}
+              from={{ opacity: 0.4, transform: 'scaleY(.1)' }}
+              enter={{ opacity: 1, transform: 'scaleY(1)' }}
+              leave={{ display: 'none' }}
+            >
+              {addingItem =>
+                addingItem
+                  ? ({ opacity, display }) => (
+                      <SubmitForm style={{ opacity, display }} onSubmit={submitNewItem}>
+                        <input
+                          autoFocus
+                          type="text"
+                          name="newItemText"
+                          value={newItemText}
+                          onChange={handleChange}
+                          placeholder="Enter item text"
+                        />
+                        <label>
+                          <input type="submit" style={{ display: 'none' }} />
+                          <Icon id="submitItem" icon="check" title="Submit" />
+                        </label>
+                        <Icon
+                          id="cancelItem"
+                          title="Cancel"
+                          onClick={() => {
+                            toggleAddMode();
+                            // Wipe input from state after closing form
+                            this.setState({ newItemText: '' });
+                          }}
+                        />
+                      </SubmitForm>
+                    )
+                  : ({ opacity, display }) => (
+                      <AddButton
+                        style={{ opacity, display }}
+                        onClick={toggleAddMode}
+                        title="Add a new item to your card"
+                      >
+                        <Icon icon="plus" />
+                        Add item
+                      </AddButton>
+                    )
+              }
+            </Transition>
           </CardBody>
         )}
       </Draggable>
