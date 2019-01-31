@@ -79,33 +79,37 @@ class Card extends Component {
       <Draggable draggableId={id} index={index}>
         {(provided, snapshot) => (
           <CardBody {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
-            {/* Cards can only be dragged from their title */}
-            <Transition items={editingTitle} from={{ opacity: 0.5 }} enter={{ opacity: 1 }} leave={{ display: 'none' }}>
-              {editingTitle =>
-                editingTitle
-                  ? ({ opacity, display }) => (
-                      <TitleFormContainer style={{ opacity, display }}>
-                        <form onSubmit={submitNewTitle}>
-                          <input autoFocus type="text" name="title" value={title} onChange={handleChange} />
-                          <label>
-                            <input type="submit" style={{ display: 'none' }} />
-                            <Icon icon="check" title="Submit" />
-                          </label>
-                        </form>
-                      </TitleFormContainer>
-                    )
-                  : ({ opacity, display }) => (
-                      <CardTitle
-                        style={{ opacity, display }}
-                        {...provided.dragHandleProps}
-                        isDragging={snapshot.isDragging}
-                      >
-                        <h3>{title}</h3> <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
-                        <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
-                      </CardTitle>
-                    )
-              }
-            </Transition>
+            {/* Cards can only be dragged from their title.
+            common div parent added for handle to exist during transition */}
+            <div {...provided.dragHandleProps}>
+              <Transition
+                items={editingTitle}
+                from={{ opacity: 0.5 }}
+                enter={{ opacity: 1 }}
+                leave={{ display: 'none' }}
+              >
+                {editingTitle =>
+                  editingTitle
+                    ? ({ opacity, display }) => (
+                        <TitleFormContainer style={{ opacity, display }}>
+                          <form onSubmit={submitNewTitle}>
+                            <input autoFocus type="text" name="title" value={title} onChange={handleChange} />
+                            <label>
+                              <input type="submit" style={{ display: 'none' }} />
+                              <Icon icon="check" title="Submit" />
+                            </label>
+                          </form>
+                        </TitleFormContainer>
+                      )
+                    : ({ opacity, display }) => (
+                        <CardTitle style={{ opacity, display }} isDragging={snapshot.isDragging}>
+                          <h3>{title}</h3> <Icon icon="pencil" onClick={toggleTitleForm} title="Edit card title" />
+                          <Icon icon="squaredCross" onClick={() => deleteCard(id)} title="Delete card" />
+                        </CardTitle>
+                      )
+                }
+              </Transition>
+            </div>
 
             {/* Droppable requires unique droppableId prop, uses render props pattern
             Expects its child to be a func which returns a component
