@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import swal from 'sweetalert';
-import { Transition } from 'react-spring';
+import { Trail, Transition } from 'react-spring';
 
 import Icon from '../Icon';
 import BoardWrapper from './BoardWrapper';
@@ -59,7 +59,6 @@ class Board extends Component {
   };
 
   updateLocalStorage = () => {
-    console.log(this.state);
     const { id, title, items, cards, cardOrder } = this.state;
     localStorage.setItem(id, JSON.stringify({ id, title, items, cards, cardOrder }));
   };
@@ -274,26 +273,33 @@ class Board extends Component {
           <Droppable droppableId="Board" direction="horizontal" type="card">
             {provided => (
               <CardsContainer {...provided.droppableProps} ref={provided.innerRef}>
-                {cardOrder.map((cardId, index) => {
-                  const card = cards[cardId];
-                  return (
-                    <Card
-                      key={cardId}
-                      card={card}
-                      items={items}
-                      index={index}
-                      updateItem={this.updateItem}
-                      addItem={this.addItem}
-                      deleteItem={this.deleteItem}
-                      updateTitle={this.updateCard}
-                      deleteCard={this.deleteCardCheck}
-                    />
-                  );
-                })}
+                <Trail
+                  items={cardOrder}
+                  keys={cardId => cardId}
+                  from={{ transform: 'translate3d(0,-200px,0)', opacity: 0 }}
+                  to={{ transform: 'translate3d(0,0px,0)', opacity: 1 }}
+                >
+                  {cardId => trailProps => {
+                    return (
+                      <Card
+                        trailProps={trailProps}
+                        key={cardId}
+                        card={cards[cardId]}
+                        items={items}
+                        index={cardOrder.indexOf(cardId)}
+                        updateItem={this.updateItem}
+                        addItem={this.addItem}
+                        deleteItem={this.deleteItem}
+                        updateTitle={this.updateCard}
+                        deleteCard={this.deleteCardCheck}
+                      />
+                    );
+                  }}
+                </Trail>
                 {provided.placeholder}
                 <Transition
                   items={addingCard}
-                  from={{ opacity: 0.5 }}
+                  from={{ opacity: 0.1 }}
                   enter={{ opacity: 1 }}
                   leave={{ display: 'none' }}
                 >

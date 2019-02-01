@@ -60,6 +60,17 @@ export const CardBody = styled.div`
   border-color: ${props => c.getDragBr(props)};
   box-shadow: ${props => c.getDragShadow(props)};
 
+  ${({ trailProps: { transform, opacity, entryIsComplete } }) => {
+    let stylesToAdd = `opacity: ${opacity};`;
+
+    // Stop adding transform property once entry is complete, allow drag-drop to take over
+    if (!entryIsComplete) {
+      stylesToAdd += `transform: ${transform};`;
+    }
+
+    return stylesToAdd;
+  }}
+
   &:hover {
     border-color: ${c.brColorHover};
   }

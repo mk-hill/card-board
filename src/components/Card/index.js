@@ -66,7 +66,7 @@ class Card extends Component {
   };
 
   render() {
-    const { id, index, deleteCard, ...itemProps } = this.props;
+    const { id, index, deleteCard, trailProps, ...itemProps } = this.props;
     const { addingItem, newItemText, editingTitle, title } = this.state;
     const {
       handleInputChange: handleChange,
@@ -75,10 +75,23 @@ class Card extends Component {
       toggleTitleForm,
       submitNewTitle,
     } = this;
+
+    /**
+     * Trail component keeps feeding 0 translate even after initial entry animation is finished
+     * Once Trail stops transforming card, will stop adding transform altogether
+     * in order to allow drag-drop transform to take over
+     */
+    const entryIsComplete = trailProps.transform === 'translate3d(0,0px,0)';
+
     return (
       <Draggable draggableId={id} index={index}>
         {(provided, snapshot) => (
-          <CardBody {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
+          <CardBody
+            trailProps={{ ...trailProps, entryIsComplete }}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            isDragging={snapshot.isDragging}
+          >
             {/* Cards can only be dragged from their title.
             common div parent added for handle to exist during transition */}
             <div {...provided.dragHandleProps}>
