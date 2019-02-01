@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import swal from 'sweetalert';
-import { Trail, Transition } from 'react-spring';
+import { Trail, Transition, Spring } from 'react-spring';
 
 import Icon from '../Icon';
 import BoardWrapper from './BoardWrapper';
+import Modal from '../Modal';
 import { CardsContainer, AddCardButton, AddCardForm, PureCard as Card } from './elements';
 
 import { BoardData as Data } from '../../data';
@@ -30,6 +31,7 @@ class Board extends Component {
       ...data,
       addingCard: false,
       newCardTitle: '',
+      editingItem: false,
     };
   }
 
@@ -54,8 +56,19 @@ class Board extends Component {
       this.setState({
         addingCard: false,
         newCardTitle: '',
+        editingItem: false,
+        itemBeingEdited: null,
       });
     }
+  };
+
+  toggleEditingItem = () => {
+    this.setState(prevState => ({ editingItem: !prevState.editingItem }));
+  };
+
+  openItemForm = itemId => {
+    const itemBeingEdited = this.state.items[itemId];
+    this.setState({ editingItem: true, itemBeingEdited });
   };
 
   updateLocalStorage = () => {
@@ -261,9 +274,10 @@ class Board extends Component {
   };
 
   render() {
-    const { cards, items, cardOrder, addingCard, title } = this.state;
+    const { cards, items, cardOrder, addingCard, editingItem, itemBeingEdited, title } = this.state;
     return (
       <BoardWrapper title={title}>
+        {editingItem ? <Modal toggleOpen={this.toggleEditingItem} item={itemBeingEdited} /> : null}
         <DragDropContext
           onDragEnd={this.handleDrop}
           // onDragStart={this.testDragStart}
@@ -287,7 +301,7 @@ class Board extends Component {
                         card={cards[cardId]}
                         items={items}
                         index={cardOrder.indexOf(cardId)}
-                        updateItem={this.updateItem}
+                        editItem={this.openItemForm}
                         addItem={this.addItem}
                         deleteItem={this.deleteItem}
                         updateTitle={this.updateCard}

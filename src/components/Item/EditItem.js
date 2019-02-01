@@ -11,14 +11,12 @@ const BackgroundShadow = styled.div`
   transition: opacity 0.2s ease;
 `;
 
-const EditBox = styled.div``;
-
 export class EditItem extends Component {
   render() {
     return (
-      <BackgroundShadow>
+      <EditBox>
         <form action="">asd</form>
-      </BackgroundShadow>
+      </EditBox>
     );
   }
 }

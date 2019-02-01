@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
+import TextFormatter from '../TextFormatter';
 import Icon from '../Icon';
 import { ItemBody } from './elements';
 
@@ -61,9 +62,9 @@ class Item extends Component {
   };
 
   render() {
-    const { id, index, isLocked, cardId, deleteItem } = this.props;
+    const { id, index, isLocked, cardId, deleteItem, editItem } = this.props;
     const { isBeingEdited, text } = this.state;
-    const { handleChange, submitUpdate, toggleEdit } = this;
+    const { handleChange, submitUpdate } = this;
 
     /* Draggable requires draggableId and index
        Expects its child to be a func like Droppable */
@@ -80,7 +81,7 @@ class Item extends Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
             isDragDisabled={isLocked}
-            onDoubleClick={toggleEdit}
+            onDoubleClick={() => editItem(id)}
           >
             {/* <Handle {...provided.dragHandleProps} /> */}
             {isBeingEdited ? (
@@ -95,7 +96,7 @@ class Item extends Component {
               </form>
             ) : (
               <>
-                {text ? <FormattedItemText text={text} /> : text}
+                {text ? <TextFormatter text={text} /> : text}
                 {/* <Icon icon="pencil" viewBox="0 -3 26 26" onClick={toggleEdit} title="Edit" /> */}
                 <Icon onClick={() => deleteItem(cardId, id, index)} title={'Delete'} />
               </>
@@ -106,51 +107,5 @@ class Item extends Component {
     );
   }
 }
-
-const FormattedItemText = ({ text, ...props }) => {
-  let str = Array.isArray(text) ? text[0] : text; // grab string out of text prop is array was passed in
-
-  const urlPattern = /\[([^[\]]+)\]\(([^)]+)\)/g; // pattern to match [markdown](url) format
-
-  // Match strings and parse them into objects: { text, url }, map objects into links array
-  // (empty array if none were found)
-  const links = (str.match(urlPattern) || []).map(string => ({
-    text: string.slice(1, string.indexOf(']')),
-    url: string.slice(string.indexOf('(') + 1, -1),
-  }));
-
-  let splitText; // Will become array of strings split at link points if links exist
-
-  // Marker to prevent formatting for tutorial purposes
-  const tutorialText = "Please don't format me!";
-  if (str.endsWith(tutorialText)) {
-    str = str.slice(0, str.length - tutorialText.length);
-  } else if (links.length) {
-    // Could probably come up with a more unique identifier in case users type '**linkwashere**'
-    str = str.replace(urlPattern, '**linkwashere**');
-    splitText = str.split('**linkwashere**');
-  }
-
-  return (
-    <>
-      {splitText ? (
-        <p style={{ margin: 0 }}>
-          {splitText.map((text, i) => (
-            <span key={text}>
-              {text}
-              {links[i] ? (
-                <a href={links[i].url} target="_blank" rel="noopener noreferrer">
-                  {links[i].text}
-                </a>
-              ) : null}
-            </span>
-          ))}
-        </p>
-      ) : (
-        str
-      )}
-    </>
-  );
-};
 
 export default Item;

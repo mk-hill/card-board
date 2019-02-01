@@ -5,6 +5,6 @@ export default class ItemData {
     this.id = uuid();
     this.text = text;
     this.isLocked = false;
-    this.content = null;
+    this.content = '';
   }
 }
