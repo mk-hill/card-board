@@ -187,7 +187,7 @@ class Board extends Component {
 
     this.setState(() => ({
       editingItem: false,
-      items: { ...items, [id]: { ...items[id], ...newContent } },
+      items: { ...items, [id]: { ...items[id], text: newContent.text, ...newContent } },
     }));
   };
 

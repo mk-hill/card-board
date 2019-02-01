@@ -62,8 +62,8 @@ class Item extends Component {
   };
 
   render() {
-    const { id, index, isLocked, cardId, deleteItem, editItem } = this.props;
-    const { isBeingEdited, text } = this.state;
+    const { id, index, isLocked, cardId, deleteItem, editItem, text } = this.props;
+    const { isBeingEdited } = this.state;
     const { handleChange, submitUpdate } = this;
 
     /* Draggable requires draggableId and index
