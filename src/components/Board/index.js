@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import swal from 'sweetalert';
-import { Trail, Transition, Spring } from 'react-spring';
+import { Trail, Transition } from 'react-spring';
 
 import Icon from '../Icon';
 import BoardWrapper from './BoardWrapper';
@@ -176,16 +176,19 @@ class Board extends Component {
   };
 
   // Change existing item's content
-  updateItem = (itemId, newContent) => {
+  updateItem = (id, newContent) => {
     const { items } = this.state;
+    const { text, description } = newContent;
 
-    if (!newContent || items[itemId].text === newContent) {
-      return; // return if text hasn't been changed
+    // If item hasn't been changed or no text provided, return
+    if (!text || (items[id].text === text && items[id].description === description)) {
+      return;
     }
 
-    this.setState({
-      items: { ...items, [itemId]: { ...items[itemId], text: newContent } },
-    });
+    this.setState(() => ({
+      editingItem: false,
+      items: { ...items, [id]: { ...items[id], ...newContent } },
+    }));
   };
 
   deleteItem = (cardId, itemId, index) => {
@@ -277,7 +280,9 @@ class Board extends Component {
     const { cards, items, cardOrder, addingCard, editingItem, itemBeingEdited, title } = this.state;
     return (
       <BoardWrapper title={title}>
-        {editingItem ? <Modal toggleOpen={this.toggleEditingItem} item={itemBeingEdited} /> : null}
+        {editingItem ? (
+          <Modal toggleOpen={this.toggleEditingItem} item={itemBeingEdited} saveChanges={this.updateItem} />
+        ) : null}
         <DragDropContext
           onDragEnd={this.handleDrop}
           // onDragStart={this.testDragStart}
@@ -290,6 +295,7 @@ class Board extends Component {
                 <Trail
                   items={cardOrder}
                   keys={cardId => cardId}
+                  // delay="200"
                   from={{ transform: 'translate3d(0,-200px,0)', opacity: 0 }}
                   to={{ transform: 'translate3d(0,0px,0)', opacity: 1 }}
                 >

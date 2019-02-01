@@ -1,10 +1,10 @@
 import uuid from 'uuid/v4';
 
 export default class ItemData {
-  constructor(text = 'Enter title') {
+  constructor(text = 'Enter item text', description = '') {
     this.id = uuid();
     this.text = text;
     this.isLocked = false;
-    this.content = '';
+    this.description = description;
   }
 }

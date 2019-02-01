@@ -25,6 +25,7 @@ const ModalBox = styled.div`
   height: 50%;
   width: 50%;
   color: ${c.color};
+  padding: 1rem;
 
   background: ${c.bg};
   border: ${c.border};
@@ -32,8 +33,8 @@ const ModalBox = styled.div`
   display: flex;
   flex-direction: column;
 
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
+  /* align-items: ; */
 
   svg {
     position: absolute;
@@ -50,7 +51,7 @@ const ModalBox = styled.div`
   }
 `;
 
-const Modal = ({ form = 'item', toggleOpen, title = 'Item Title', item, ...props }) => {
+const Modal = ({ form = 'item', toggleOpen, item, ...props }) => {
   const backgroundId = 'backgroundShadow';
 
   const handleBackgroundClick = e => {
@@ -64,9 +65,8 @@ const Modal = ({ form = 'item', toggleOpen, title = 'Item Title', item, ...props
       {springProps => (
         <BackgroundShadow style={springProps} id={backgroundId} onClick={handleBackgroundClick}>
           <ModalBox>
-            <h4>{item.text}</h4>
             <Icon icon="squaredCross" onClick={toggleOpen} />
-            {form === 'item' ? <ItemForm {...item} /> : null}
+            {form === 'item' ? <ItemForm {...item} {...props} /> : null}
           </ModalBox>
         </BackgroundShadow>
       )}

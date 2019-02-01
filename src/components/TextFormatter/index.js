@@ -1,3 +1,8 @@
+/**
+ * Only link formatter exists for now. If bold/italic etc. formatters are added,
+ * split each into separate component, export final TextFormatter from here
+ */
+
 import React from 'react';
 
 const LinkFormatter = ({ text, isTitle = false, ...props }) => {
@@ -25,10 +30,9 @@ const LinkFormatter = ({ text, isTitle = false, ...props }) => {
   }
 
   return (
-    <>
-      {splitText ? (
-        <p style={{ margin: 0 }}>
-          {splitText.map((text, i) => (
+    <p style={{ margin: 0 }} {...props}>
+      {splitText
+        ? splitText.map((text, i) => (
             <span key={text}>
               {text}
               {links[i] ? (
@@ -37,12 +41,9 @@ const LinkFormatter = ({ text, isTitle = false, ...props }) => {
                 </a>
               ) : null}
             </span>
-          ))}
-        </p>
-      ) : (
-        str
-      )}
-    </>
+          ))
+        : str}
+    </p>
   );
 };
 
