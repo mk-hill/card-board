@@ -123,6 +123,7 @@ class ItemForm extends Component {
                 value={textForm}
                 onKeyDown={e => (e.ctrlKey && e.key === 'Enter' ? toggleEdit('text') : null)}
                 onChange={handleFormChange}
+                onBlur={() => toggleEdit('text')}
               />
               <Icon icon="check" onClick={() => toggleEdit('text')} />
             </>
@@ -144,6 +145,7 @@ class ItemForm extends Component {
                 value={descriptionForm}
                 onKeyDown={e => (e.ctrlKey && e.key === 'Enter' ? toggleEdit('description') : null)}
                 onChange={handleFormChange}
+                onBlur={() => toggleEdit('description')}
               />
               <Icon icon="check" onClick={() => toggleEdit('description')} />
             </>

@@ -7,6 +7,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { card as c } from '../../theme';
+import BoldFormatter from './BoldFormatter';
 
 const ItemLink = styled.a`
   color: ${c.titleIconHover};
@@ -26,8 +27,8 @@ const ItemLink = styled.a`
     text-decoration-color: ${c.colorDark};
   }
 `;
-
-const LinkFormatter = ({ text, isTitle = false, ...props }) => {
+// todo merge into single formatter instead
+const LinkFormatter = ({ text, ...props }) => {
   let str = Array.isArray(text) ? text[0] : text; // grab string out of text prop is array was passed in
 
   const urlPattern = /\[([^[\]]+)\]\(([^)]+)\)/g; // pattern to match [markdown](url) format
@@ -46,9 +47,9 @@ const LinkFormatter = ({ text, isTitle = false, ...props }) => {
   if (str.endsWith(tutorialText)) {
     str = str.slice(0, str.length - tutorialText.length);
   } else if (links.length) {
-    // Could probably come up with a more unique identifier in case users type '**linkwashere**'
-    str = str.replace(urlPattern, '**linkwashere**');
-    splitText = str.split('**linkwashere**');
+    // Could probably come up with a more unique identifier in case users type '%LINKWASHERE%'
+    str = str.replace(urlPattern, '%LINKWASHERE%');
+    splitText = str.split('%LINKWASHERE%');
   }
 
   return (

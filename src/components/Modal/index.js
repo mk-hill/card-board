@@ -22,10 +22,11 @@ const ModalBox = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 50%;
-  width: 50%;
   color: ${c.color};
   padding: 1rem;
+
+  height: 50%;
+  width: 50%;
 
   background: ${c.bg};
   border: ${c.border};
@@ -50,6 +51,19 @@ const ModalBox = styled.div`
     &:hover {
       color: ${c.titleIconHover};
     }
+  }
+
+  @media only screen and (min-width: 2000px) {
+    height: 45%;
+    width: 30%;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    width: 80%;
+  }
+
+  @media only screen and (max-height: 700px) {
+    height: 80%;
   }
 `;
 
