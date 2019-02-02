@@ -20,8 +20,8 @@ export default class BoardData {
     return card;
   }
 
-  addItem(cardId, text, letReactHandleState = true) {
-    const item = new ItemData(text);
+  addItem(cardId, text, description, letReactHandleState = true) {
+    const item = new ItemData(text, description);
     if (!letReactHandleState) {
       this.items[item.id] = item;
       this.cards[cardId].itemIds.push(item.id);
@@ -44,34 +44,68 @@ export default class BoardData {
   }
 
   static generateStarter() {
-    const data = new BoardData('Your cardboard', true);
+    const data = new BoardData('Your Cardboard', true);
     const cards = ['Welcome', 'Moving things', 'Drag me from my title!'].map(title => data.addCard(title, false));
+
+    const addItemToCard = (cardIndex, [text, description]) => {
+      data.addItem(cards[cardIndex].id, text, description, false);
+    };
+
     const welcomeItems = [
-      'Welcome to cardboard!',
-      'Organize your thoughts, plans, and anything else you have in mind.',
-      'Cardboard was inspired by [Trello](https://trello.com/). Check it out for a more professional solution.',
+      [
+        'Welcome to [Cardboard](https://github.com/mk-hill/card-board)!',
+        'Use it to organize your thoughts, plans, and anything else you have in mind.',
+      ],
+      [
+        'Cardboard was inspired by [Trello](https://trello.com/).',
+        'Feel free to check it out for a more professional solution. Or stick around for the adventure! (and possibly the occasional bug?)',
+      ],
+      [
+        'Double click an item to view its details. Try this one!',
+        "Click any of the fields here to edit its contents. Once you're done, click the button below to save your changes.",
+      ],
     ];
-    welcomeItems.forEach(text => data.addItem(cards[0].id, text, false));
+
+    welcomeItems.forEach(item => addItemToCard(0, item));
 
     const moveItems = [
-      'Drag & drop or use your keyboard to move cards and items.',
-      'Drag items from anywhere on their body.',
-      'To drag and drop using a touchscreen, simply press down on the item or card title until its color changes, and drag it to your desired location.',
-      'For keyboard usage: select your target with Tab, lift it with Space, move it with your arrow keys and place it down with Space again.',
+      ['Check out the items below for more on how to move cards and items.', 'The items *below* this one.'],
+      [
+        'You can drag & drop...',
+        'Items can be dragged from anywhere on their body. Cards can only be dragged from their title bars.',
+      ],
+      [
+        'Or use your keyboard.',
+        "Press 'Tab' to cycle through items and cards, 'Space' to lift your selection, arrow keys to move it around, and 'Space' to place it.",
+      ],
+      [
+        'Using a touchscreen? That works too!',
+        'Simply press down on the item or card title until its color changes, and drag it to your desired location.',
+      ],
     ];
-    moveItems.forEach(text => data.addItem(cards[1].id, text, false));
+
+    moveItems.forEach(item => addItemToCard(1, item));
 
     const howToItems = [
-      "Add as many items and cards as you'd like, cardboard will let you scroll through them.",
-      'Double click an item to edit it.',
-      'Further options will appear as you hover over items or card title bars.',
-      'You can also links to your items using inline [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links) syntax!',
-      "[text to display](target url) Please don't format me!",
-      'If you dont want cardboard to format your item title, just ask it nicely.',
-      // `Adding "Please don't format me!" to the end of your title usually does the trick.`,
+      [
+        "Add as many items and cards as you'd like!",
+        'Boards and cards can scroll infinitely... Or as far as your device can handle.',
+      ],
+      [
+        'More options will appear as you hover over items and card title bars.',
+        'Items and cards can be deleted directly from the main board view. Cardboard will confirm your intent before deleting a card with items in it.',
+      ],
+      [
+        'Use inline [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links) syntax to add links to your items!',
+        'Same goes for your item [descriptions](https://github.com/mk-hill/card-board).',
+      ],
+      [
+        "If you don't want Cardboard to format your text, just ask nicely.",
+        `Adding "Please don't format me!" to the end of your text usually does the trick: [link which would](normally be formatted) Please don't format me!`,
+      ],
     ];
 
-    howToItems.forEach(text => data.addItem(cards[2].id, text, false));
+    howToItems.forEach(item => addItemToCard(2, item));
     return data;
   }
 }

@@ -36,6 +36,8 @@ const ModalBox = styled.div`
   justify-content: space-evenly;
   /* align-items: ; */
 
+  perspective: 200px;
+
   svg {
     position: absolute;
     right: 0.5rem;

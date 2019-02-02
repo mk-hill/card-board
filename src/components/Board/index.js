@@ -180,8 +180,9 @@ class Board extends Component {
     const { items } = this.state;
     const { text, description } = newContent;
 
-    // If item hasn't been changed or no text provided, return
+    // If item hasn't been changed or no text provided, just end edit state and return
     if (!text || (items[id].text === text && items[id].description === description)) {
+      this.setState({ editingItem: false });
       return;
     }
 

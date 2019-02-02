@@ -4,6 +4,28 @@
  */
 
 import React from 'react';
+import styled from 'styled-components';
+
+import { card as c } from '../../theme';
+
+const ItemLink = styled.a`
+  color: ${c.titleIconHover};
+  text-decoration: underline;
+  text-decoration-color: ${c.titleIconHover};
+  font-weight: 600;
+  transition: color ${c.transition}, text-decoration-color ${c.transition};
+
+  &:hover,
+  &:hover:visited {
+    color: ${c.brColorDrag};
+    text-decoration-color: ${c.brColorDrag};
+  }
+
+  &:visited {
+    color: ${c.colorDark};
+    text-decoration-color: ${c.colorDark};
+  }
+`;
 
 const LinkFormatter = ({ text, isTitle = false, ...props }) => {
   let str = Array.isArray(text) ? text[0] : text; // grab string out of text prop is array was passed in
@@ -36,9 +58,9 @@ const LinkFormatter = ({ text, isTitle = false, ...props }) => {
             <span key={text}>
               {text}
               {links[i] ? (
-                <a href={links[i].url} target="_blank" rel="noopener noreferrer">
+                <ItemLink href={links[i].url} target="_blank" rel="noopener noreferrer">
                   {links[i].text}
-                </a>
+                </ItemLink>
               ) : null}
             </span>
           ))

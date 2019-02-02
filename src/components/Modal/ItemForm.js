@@ -5,20 +5,17 @@ import TextFormatter from '../TextFormatter';
 import { card as c } from '../../theme';
 import Icon from '../Icon';
 
-const FormWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  padding: 10rem;
-`;
-
 const FormTitle = styled.h3`
+  margin-top: 0;
   margin-bottom: 0.5rem;
+  font-weight: 300;
   text-align: center;
+  /* font-size: 1.5em; */
 `;
 
 const FormGroup = styled.div`
   box-sizing: border-box;
-  margin: 0.5rem;
+  margin-bottom: 0.5rem;
   /* padding: 1rem; */
   min-height: 20%;
   width: 100%;
@@ -26,37 +23,7 @@ const FormGroup = styled.div`
   border: ${c.border};
   border-radius: ${c.brRadius};
 
-  overflow: scroll;
-  ::-webkit-scrollbar {
-    width: 3px;
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: ${c.brColor};
-
-    &:hover {
-      background: ${c.brColorHover};
-    }
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 10px 1px ${c.brColor};
-  }
-
-  /* cursor: pointer; */
-
   position: relative;
-  svg {
-    /* position: absolute;
-    bottom: 1rem;
-    right: 1rem; */
-  }
 `;
 
 const FormInput = styled.textarea`
@@ -70,6 +37,11 @@ const FormInput = styled.textarea`
   border: none;
   transition: box-shadow ${c.transition};
 
+  &:focus {
+    outline: none;
+    box-shadow: 1px 1px 10px 1px ${c.brColor};
+  }
+
   ::-webkit-scrollbar {
     width: 3px;
     background-color: transparent;
@@ -82,10 +54,30 @@ const FormInput = styled.textarea`
       background: ${c.brColorHover};
     }
   }
+`;
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 10px 1px ${c.brColor};
+const SaveButton = styled.button`
+  width: 40%;
+  padding: 0.5rem;
+
+  align-self: center;
+
+  border: none;
+  border-radius: ${c.brRadius};
+  background-color: ${c.colorDark};
+  color: ${c.bg};
+
+  cursor: pointer;
+  transition: background-color ${c.transition}, box-shadow ${c.transition};
+
+  &:hover {
+    background-color: ${c.titleIconHover};
+    box-shadow: 2px 2px 10px -2px ${c.brColor};
+  }
+
+  &:active {
+    background-color: ${c.colorDark};
+    box-shadow: none;
   }
 `;
 
@@ -97,9 +89,9 @@ class ItemForm extends Component {
     descriptionForm: '',
   };
 
+  // Set appropriate edit state for param 'text' or 'description'
   toggleEdit = target => {
     const key = `editing${target[0].toUpperCase()}${target.slice(1)}`;
-    console.log(key);
     this.setState(prevState => ({
       [key]: !prevState[key],
     }));
@@ -120,7 +112,7 @@ class ItemForm extends Component {
     const { toggleEdit, handleFormChange } = this;
     return (
       <>
-        <FormTitle>Edit Item</FormTitle>
+        <FormTitle>Item Details</FormTitle>
         Display text:
         <FormGroup>
           {editingText ? (
@@ -158,12 +150,14 @@ class ItemForm extends Component {
           ) : (
             <TextFormatter
               text={descriptionForm || 'Add a detailed description...'}
-              style={{ padding: '1rem', margin: 0, cursor: 'pointer', whiteSpace: 'pre-wrap' }}
+              style={{ padding: '1rem', margin: 0, cursor: 'pointer' }}
               onClick={() => toggleEdit('description')}
             />
           )}
         </FormGroup>
-        <button onClick={() => saveChanges(id, { text: textForm, description: descriptionForm })}>Save Changes</button>
+        <SaveButton onClick={() => saveChanges(id, { text: textForm, description: descriptionForm })}>
+          Save Changes
+        </SaveButton>
       </>
     );
   }
