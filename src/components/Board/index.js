@@ -10,6 +10,7 @@ import { CardsContainer, AddCardButton, AddCardForm, PureCard as Card } from './
 
 import { BoardData as Data } from '../../data';
 
+// todo treat dummy data as placeholders so it gets wiped when user focuses on an edit form
 const dummyData = Data.generateStarter();
 
 class Board extends Component {

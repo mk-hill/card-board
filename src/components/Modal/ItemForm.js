@@ -107,7 +107,7 @@ class ItemForm extends Component {
   };
 
   render() {
-    const { saveChanges, id } = this.props;
+    const { saveChanges, id, isDummy } = this.props;
     const { editingText, textForm, editingDescription, descriptionForm } = this.state;
     const { toggleEdit, handleFormChange } = this;
     return (
@@ -123,6 +123,7 @@ class ItemForm extends Component {
                 value={textForm}
                 onKeyDown={e => (e.ctrlKey && e.key === 'Enter' ? toggleEdit('text') : null)}
                 onChange={handleFormChange}
+                onFocus={e => (true ? e.target.select() : null)}
                 onBlur={() => toggleEdit('text')}
               />
               <Icon icon="check" onClick={() => toggleEdit('text')} />

@@ -37,4 +37,4 @@ const ItalicFormatter = ({ text, ...props }) => {
   );
 };
 
-export default BoldFormatter;
+export default ItalicFormatter;

@@ -54,8 +54,8 @@ const ModalBox = styled.div`
   }
 
   @media only screen and (min-width: 2000px) {
-    height: 45%;
-    width: 30%;
+    height: 40%;
+    width: 25%;
   }
 
   @media only screen and (max-width: 1000px) {
